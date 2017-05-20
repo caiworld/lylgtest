@@ -94,8 +94,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void done(String s, final BmobException e) {
                         if (e == null) {//注册成功
-                            //开始环信注册
-                            huanXinRegister();
+                            //开始环信注册,在这块注册报错，可能是不能在这个方法中执行那段代码
+//                            huanXinRegister();
                         } else {//注册失败
                             dialog.dismiss();
                             Log.e("Bmob失败：", e.getMessage());//Bmob失败：: unique index cannot has duplicate value: caihao
@@ -110,11 +110,14 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                            //注册失败，让其返回
+                            return;
                         }
 
                     }
                 });
-
+                //Bmob注册成功后才开始环信注册
+                huanXinRegister();
             }
         }.start();
     }
