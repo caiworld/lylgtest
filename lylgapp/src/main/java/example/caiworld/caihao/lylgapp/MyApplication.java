@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * Created by caihao on 2017/5/14.
  */
@@ -29,6 +31,9 @@ public class MyApplication extends Application {
 
         // 初始化环信SDK
         initEasemob();
+
+//        //默认初始化bmob
+//        Bmob.initialize(this, "185d4c4109490b94a8fc951c9763375b");
     }
 
     /**

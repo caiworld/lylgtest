@@ -14,6 +14,8 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * 登录页面
  * 2017/5/14
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //默认初始化bmob
+        Bmob.initialize(this, "185d4c4109490b94a8fc951c9763375b");
         setContentView(R.layout.activity_login);
         initView();
     }
