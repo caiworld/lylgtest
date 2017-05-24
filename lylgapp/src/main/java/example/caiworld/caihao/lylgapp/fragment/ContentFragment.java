@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +129,7 @@ public class ContentFragment extends Fragment {
                 //页面被选中时调用
                 //调用各个页面的初始化数据的方法，这样可以防止viewpager本身的预加载
                 pagerList.get(position).initData();
+                Log.e("页面被选中：",position+"");
             }
 
             @Override

@@ -1,26 +1,132 @@
 package example.caiworld.caihao.lylgapp.pager;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hyphenate.chat.EMMessage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import example.caiworld.caihao.lylgapp.ChatActivity;
 import example.caiworld.caihao.lylgapp.R;
 import example.caiworld.caihao.lylgapp.base.BasePager;
+import example.caiworld.caihao.lylgapp.bean.LYLGBmobUser;
 
 /**
  * Created by caihao on 2017/5/18.
  */
 public class FourPager extends BasePager {
+
+    private ListView lvFriends;
+    private List<LYLGBmobUser> friends;
+
     public FourPager(Activity activity) {
         super(activity);
     }
 
     @Override
     public View initView() {
-        return View.inflate(mActivity, R.layout.pager_four, null);
+        friends = new ArrayList<>();
+        friends.add(new LYLGBmobUser("客服", "kefu", ""));//添加客服，以免一个好友也没有
+        View view = View.inflate(mActivity, R.layout.pager_four, null);
+        lvFriends = (ListView) view.findViewById(R.id.lv_friends);
+        requestServer();
+        lvFriends.setAdapter(new FriendsAdapter());
+        lvFriends.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(mActivity, ChatActivity.class);
+                // EaseUI封装的聊天界面需要这两个参数，聊天者的username，以及聊天类型，单聊还是群聊
+                intent.putExtra("userId", friends.get(position).getUsername());
+                intent.putExtra("chatType", EMMessage.ChatType.Chat);
+                mActivity.startActivity(intent);
+            }
+        });
+        return view;
     }
 
     @Override
     public void initData() {
-
+        //TODO 在这里写的话则requestServer()中获取不到friends.size();
+        //每次进入这个页面的时候都去请求服务器获取好友数据
+        requestServer();
     }
+
+    /**
+     * 查询服务器获取数据
+     */
+    private void requestServer() {
+        BmobQuery<LYLGBmobUser> query = new BmobQuery<>();
+        query.addQueryKeys("username");//只查询username这一列的值
+        query.findObjects(new FindListener<LYLGBmobUser>() {
+            @Override
+            public void done(List<LYLGBmobUser> list, BmobException e) {
+                if (e == null) {//查询成功
+                    friends.clear();//清空之前的数据
+                    friends.add(new LYLGBmobUser("客服", "kefu", ""));//把客服重新添加进去
+                    friends.addAll(list);
+                    for (LYLGBmobUser user : list) {
+                        Log.e("查询user", user.getUsername() + ":" + list.size());
+                        Log.e("friends.size", friends.size() + "");
+                    }
+                } else {//查询失败
+                    Log.e("FourPager:", "requestServer失败" + e.getMessage());
+                }
+            }
+        });
+        if (friends != null) {
+            Log.e("friends.size", friends.size() + "");
+        }
+    }
+
+
+    class FriendsAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return friends.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return friends.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            FriendHolder holder;
+            if (convertView == null) {
+                convertView = View.inflate(mActivity, R.layout.item_friend, null);
+                holder = new FriendHolder();
+                holder.tvFriend = (TextView) convertView.findViewById(R.id.tv_friend);
+                convertView.setTag(holder);
+            } else {
+                holder = (FriendHolder) convertView.getTag();
+            }
+            holder.tvFriend.setText(friends.get(position).getUsername());
+            return convertView;
+        }
+    }
+
+    static class FriendHolder {
+        TextView tvFriend;
+    }
+
 }

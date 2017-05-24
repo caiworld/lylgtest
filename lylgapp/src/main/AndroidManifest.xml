@@ -96,7 +96,6 @@
             android:value="1132170505178188#b15041025" />
         <!-- 声明sdk所需的service SDK核心功能 -->
 
-
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -109,7 +108,10 @@
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".ChatActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
         <service
             android:name="com.hyphenate.chat.EMChatService"
@@ -127,6 +129,7 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>
