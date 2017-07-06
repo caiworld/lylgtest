@@ -25,12 +25,14 @@ import example.caiworld.caihao.lylgapp.base.BasePager;
 import example.caiworld.caihao.lylgapp.bean.LYLGBmobUser;
 
 /**
+ * 联系人页面
  * Created by caihao on 2017/5/18.
  */
 public class FourPager extends BasePager {
 
     private ListView lvFriends;
     private List<LYLGBmobUser> friends;
+    private FriendsAdapter adapter;
 
     public FourPager(Activity activity) {
         super(activity);
@@ -42,8 +44,9 @@ public class FourPager extends BasePager {
         friends.add(new LYLGBmobUser("客服", "kefu", ""));//添加客服，以免一个好友也没有
         View view = View.inflate(mActivity, R.layout.pager_four, null);
         lvFriends = (ListView) view.findViewById(R.id.lv_friends);
-        requestServer();
-        lvFriends.setAdapter(new FriendsAdapter());
+//        requestServer();
+        adapter = new FriendsAdapter();
+        lvFriends.setAdapter(adapter);
         lvFriends.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -81,6 +84,7 @@ public class FourPager extends BasePager {
                         Log.e("查询user", user.getUsername() + ":" + list.size());
                         Log.e("friends.size", friends.size() + "");
                     }
+                    adapter.notifyDataSetChanged();
                 } else {//查询失败
                     Log.e("FourPager:", "requestServer失败" + e.getMessage());
                 }

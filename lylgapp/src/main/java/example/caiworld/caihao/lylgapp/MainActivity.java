@@ -11,11 +11,13 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
 import example.caiworld.caihao.lylgapp.fragment.ContentFragment;
+import example.caiworld.caihao.lylgapp.pager.HomePager;
 
 public class MainActivity extends AppCompatActivity {
 
     private FrameLayout flMain;
     private static final String CONTENT_FRAGMENT = "fragment_content";
+    private ContentFragment contentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +40,22 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();//开启一个事物
         //第三个参数给fragment添加标签tag，便于查找
         //fm.findFragmentByTag(CONTENT_FRAGMENT);
-        transaction.replace(R.id.fl_main, new ContentFragment(), CONTENT_FRAGMENT);
+        contentFragment = new ContentFragment();
+        transaction.replace(R.id.fl_main, contentFragment, CONTENT_FRAGMENT);
         transaction.commit();//提交事物
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((HomePager)contentFragment.pagerList.get(0)).myOnResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ((HomePager)contentFragment.pagerList.get(0)).myOnPause();
     }
 
     @Override
@@ -48,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         //主页面销毁时退出登录
         signOut();
+        //停止LocationClient，即停止获取位置信息
+        ((HomePager)contentFragment.pagerList.get(0)).stop();
+        Log.e("MainActivity","主页面销毁");
     }
 
     /**
@@ -74,4 +92,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        //使用 Back 键返回桌面，但不关闭当前应用，而是使之进入后台，就像按下 Home 键一样
+//        Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
+//        launcherIntent.addCategory(Intent.CATEGORY_HOME);
+//        startActivity(launcherIntent);
+//
+//    }
 }

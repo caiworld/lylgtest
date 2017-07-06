@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.controller.EaseUI;
@@ -31,6 +32,8 @@ public class MyApplication extends Application {
 
         // 初始化环信SDK
         initEasemob();
+        //初始化百度地图sdk
+        SDKInitializer.initialize(getApplicationContext());
 
 //        //默认初始化bmob
 //        Bmob.initialize(this, "185d4c4109490b94a8fc951c9763375b");

@@ -127,6 +127,11 @@ public class ContentFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 //页面被选中时调用
+                if (position==0){
+                    //TODO 因为当切换pager之后，地图变成了好多黑线（初步解决方案）
+                    pagerList.remove(0);
+                    pagerList.add(0,new HomePager(mActivity));
+                }
                 //调用各个页面的初始化数据的方法，这样可以防止viewpager本身的预加载
                 pagerList.get(position).initData();
                 Log.e("页面被选中：",position+"");
