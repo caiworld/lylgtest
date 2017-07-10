@@ -31,4 +31,7 @@ dependencies {
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
     //    compile 'cn.bmob.android:http-legacy:1.0'
+    compile files('libs/jcore-android_v1.1.3.jar')
+    //多选择器
+    compile 'com.github.stfalcon:universalpickerdialog:0.1.0'
 }

@@ -19,12 +19,16 @@
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></com.baidu.mapapi.map.MapView>
-        <Button
-            android:text="GO BACK"
-            android:layout_margin="5dp"
-            android:id="@+id/bt_moveTOMe"
+        <ImageView
+            android:clickable="true"
+            android:src="@mipmap/me"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/iv_moveTOMe"
             android:layout_width="wrap_content"
-            android:layout_gravity="top|right"
+            android:layout_gravity="bottom|left"
             android:layout_height="wrap_content" />
         <ImageView
             android:paddingBottom="32dp"

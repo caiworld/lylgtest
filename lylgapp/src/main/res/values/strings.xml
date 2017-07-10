@@ -7,6 +7,8 @@
     <string name="describe2">去注册 ></string>
     <string name="login">登录</string>
     <string name="register">注册</string>
+    <string name="set_receive_time">多久以后取货</string>
+    <string name="set_goods_weight">物品重量</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

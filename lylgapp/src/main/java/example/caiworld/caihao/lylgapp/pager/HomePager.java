@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -49,7 +50,7 @@ public class HomePager extends BasePager {
     private LocationClient mLocationClient;
     private BaiduMap baiduMap;
     private boolean isFirstLocate = true;//用来判断是否是第一次移动位置，默认是true，移动一次之后置为false
-    private Button moveToMe;
+    private ImageView moveToMe;
     private BDLocation myLocation;
     private double lat;
     private double lon;
@@ -71,7 +72,7 @@ public class HomePager extends BasePager {
                 mActivity.startActivity(intent);
             }
         });
-        moveToMe = (Button) view.findViewById(R.id.bt_moveTOMe);
+        moveToMe = (ImageView) view.findViewById(R.id.iv_moveTOMe);
         moveToMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,9 +144,7 @@ public class HomePager extends BasePager {
 
     private void drawZBLD() {
         BitmapDescriptor bitmapDes = BitmapDescriptorFactory
-                .fromResource(R.mipmap.shou1);
-//        BitmapDescriptor me = BitmapDescriptorFactory
-//                .fromResource(R.mipmap.fa1);
+                .fromResource(R.mipmap.pinlove);
 
         if (lat <= 0 || lon <= 0) {//还未获取当前位置
             Log.e("homepager", "还未获取当前位置");

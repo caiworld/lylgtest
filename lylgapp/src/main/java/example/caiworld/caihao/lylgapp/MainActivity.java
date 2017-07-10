@@ -1,16 +1,25 @@
 package example.caiworld.caihao.lylgapp;
 
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import example.caiworld.caihao.lylgapp.fragment.ContentFragment;
+import example.caiworld.caihao.lylgapp.jpush.ExampleUtil;
+import example.caiworld.caihao.lylgapp.jpush.Logger;
 import example.caiworld.caihao.lylgapp.pager.HomePager;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,17 +27,19 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout flMain;
     private static final String CONTENT_FRAGMENT = "fragment_content";
     private ContentFragment contentFragment;
+    public static boolean isForeground = false;
+    private static String tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
+        init();
         initFragment();
     }
 
-    private void initView() {
-
+    private void init() {
+        setTag();
     }
 
     /**
@@ -49,13 +60,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ((HomePager)contentFragment.pagerList.get(0)).myOnResume();
+        isForeground = true;
+        ((HomePager) contentFragment.pagerList.get(0)).myOnResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        ((HomePager)contentFragment.pagerList.get(0)).myOnPause();
+        isForeground = false;
+        ((HomePager) contentFragment.pagerList.get(0)).myOnPause();
     }
 
     @Override
@@ -64,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         //主页面销毁时退出登录
         signOut();
         //停止LocationClient，即停止获取位置信息
-        ((HomePager)contentFragment.pagerList.get(0)).stop();
-        Log.e("MainActivity","主页面销毁");
+        ((HomePager) contentFragment.pagerList.get(0)).stop();
+        Log.e("MainActivity", "主页面销毁");
     }
 
     /**
@@ -101,4 +114,97 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(launcherIntent);
 //
 //    }
+
+    //start-->JPush
+    //for receive customer msg from jpush server
+    public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+
+    private static final String TAG = "JPush";
+    private static final int MSG_SET_TAGS = 1002;
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_SET_TAGS:
+                    Logger.d(TAG, "Set tags in handler.");
+                    JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, mTagsCallback);
+                    break;
+
+                default:
+                    Logger.i(TAG, "Unhandled msg - " + msg.what);
+            }
+        }
+    };
+    private final TagAliasCallback mTagsCallback = new TagAliasCallback() {
+
+        @Override
+        public void gotResult(int code, String alias, Set<String> tags) {
+            String logs;
+            switch (code) {
+                case 0:
+                    logs = "Set tag and alias success";
+                    Logger.i(TAG, logs);
+                    break;
+
+                case 6002:
+                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
+                    Logger.i(TAG, logs);
+                    if (ExampleUtil.isConnected(getApplicationContext())) {
+                        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG_SET_TAGS, tags), 1000 * 60);
+                    } else {
+                        Logger.i(TAG, "No network");
+                    }
+                    break;
+
+                default:
+                    logs = "Failed with errorCode = " + code;
+                    Logger.e(TAG, logs);
+            }
+
+//            ExampleUtil.showToast(logs, getApplicationContext());
+        }
+
+    };
+
+    /**
+     * 设置标签，使用用户名作为标签
+     */
+    private void setTag() {
+//        EditText tagEdit = (EditText) findViewById(R.id.et_tag);
+        tag = getIntent().getStringExtra("username");
+
+//        // 检查 tag 的有效性
+//        if (TextUtils.isEmpty(tag)) {
+//            Toast.makeText(MainActivity.this, "Tag不能为空", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        // ","隔开的多个 转换成 Set
+        String[] sArray = tag.split(",");
+        Set<String> tagSet = new LinkedHashSet<String>();
+        for (String sTagItme : sArray) {
+            if (!ExampleUtil.isValidTagAndAlias(sTagItme)) {
+                Toast.makeText(MainActivity.this, "格式不对", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            tagSet.add(sTagItme);
+        }
+
+        //调用JPush API设置Tag
+        mHandler.sendMessage(mHandler.obtainMessage(MSG_SET_TAGS, tagSet));
+
+    }
+//end-->JPush
+
+    /**
+     * 获取用户名
+     * @return
+     */
+    public static String getUserName() {
+        return tag;
+    }
 }

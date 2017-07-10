@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import cn.bmob.v3.Bmob;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by caihao on 2017/5/14.
@@ -34,6 +34,9 @@ public class MyApplication extends Application {
         initEasemob();
         //初始化百度地图sdk
         SDKInitializer.initialize(getApplicationContext());
+        // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
+        JPushInterface.init(getApplicationContext());
+
 
 //        //默认初始化bmob
 //        Bmob.initialize(this, "185d4c4109490b94a8fc951c9763375b");

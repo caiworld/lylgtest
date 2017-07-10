@@ -36,21 +36,19 @@
                     android:id="@+id/sendAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="见贤路"
-                    android:visibility="gone" />
-                <!--发货信息提示-->
-                <TextView
-                    android:id="@+id/sendHint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="请选择发货人地址"
+                    android:hint="填写发货信息"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
                     android:visibility="visible" />
                 <!--寄快递的人信息，一般即好友或者卖家信息，可不填-->
                 <TextView
                     android:id="@+id/sendDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="张三  12345678901"
+                    android:layout_marginTop="3dp"
+                    android:hint="填写发货人信息"
+                    android:textColor="#66000000"
+                    android:textSize="12sp"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -79,26 +77,25 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:orientation="vertical">
-                <!--守快递地址-->
+
+                <!--收快递地址-->
                 <TextView
                     android:id="@+id/receiveAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="开元大道"
-                    android:visibility="gone" />
-                <!--收货信息提示-->
-                <TextView
-                    android:id="@+id/receiveHint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="请选择收货人地址"
+                    android:hint="填写收货信息"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
                     android:visibility="visible" />
                 <!--收快递的人信息，一般是自己或亲友，必填-->
                 <TextView
                     android:id="@+id/receiveDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="李四  98765432101"
+                    android:layout_marginTop="3dp"
+                    android:hint="填写收货人信息"
+                    android:textColor="#66000000"
+                    android:textSize="12sp"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -124,13 +121,14 @@
                 android:text="取货时间" />
 
             <TextView
+                android:id="@+id/tv_receiveTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:paddingRight="10dp"
-                android:text="05-31 20:20" />
+                android:text="请选择取货时间" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -154,6 +152,7 @@
                 android:text="物品信息" />
 
             <TextView
+                android:id="@+id/tv_goods"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -168,6 +167,13 @@
                 android:layout_gravity="center_vertical"
                 android:text=" > " />
         </LinearLayout>
+        <EditText
+            android:hint="备注"
+            android:id="@+id/et_comment"
+            android:lines="3"
+            android:maxLines="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <!--跑腿费规则-->
         <TextView
             android:id="@+id/tv_charge"
@@ -182,26 +188,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:background="#ccc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="#ccc"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tv_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="预估费用： ￥14.95"
-            android:textSize="16sp"
-            android:visibility="gone"
             android:layout_margin="5dp"
-            />
+            android:text="预估费用： ￥ 6.8元"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <Button
-            android:background="#3aa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/buy"
             android:onClick="payment"
             android:text="去下单" />
     </LinearLayout>
