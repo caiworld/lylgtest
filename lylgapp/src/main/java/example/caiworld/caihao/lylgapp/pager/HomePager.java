@@ -2,6 +2,10 @@ package example.caiworld.caihao.lylgapp.pager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,7 @@ import com.baidu.mapapi.map.MapViewLayoutParams;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
@@ -32,8 +37,14 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.hyphenate.chat.EMMessage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import example.caiworld.caihao.lylgapp.ChatActivity;
 import example.caiworld.caihao.lylgapp.HelpActivity;
+import example.caiworld.caihao.lylgapp.MainActivity;
 import example.caiworld.caihao.lylgapp.R;
 import example.caiworld.caihao.lylgapp.base.BasePager;
 import example.caiworld.caihao.lylgapp.utils.CoordinateUtil;
@@ -94,10 +105,10 @@ public class HomePager extends BasePager {
                 baiduMap.setMyLocationData(locationData);
 
                 //让指针到我的位置上
-                test(new LatLng(lat,lon));
+                test(new LatLng(lat, lon));
                 ViewGroup.LayoutParams params = new MapViewLayoutParams.Builder()
                         .layoutMode(MapViewLayoutParams.ELayoutMode.mapMode)// 按照经纬度设置位置
-                        .position(new LatLng(lat,lon))// 不能传null
+                        .position(new LatLng(lat, lon))// 不能传null
                         .width(MapViewLayoutParams.WRAP_CONTENT)
                         .height(MapViewLayoutParams.WRAP_CONTENT)
                         .yOffset(-5)// 距离position的像素 向下是正值 向上是负值
@@ -139,6 +150,8 @@ public class HomePager extends BasePager {
      */
     @Override
     public void initData() {
+        ((MainActivity)mActivity).getTvTitle().setText("首页");
+        ((MainActivity)mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
         drawZBLD();
     }
 
@@ -160,7 +173,7 @@ public class HomePager extends BasePager {
 //                .title("myself");// 设置标题
 //        baiduMap.addOverlay(markerOptions);
 
-        MarkerOptions markerOptions ;
+        MarkerOptions markerOptions;
         markerOptions = new MarkerOptions().title("向北")
                 .position(new LatLng(lat + 0.001, lon))
                 .icon(bitmapDes)
@@ -202,7 +215,7 @@ public class HomePager extends BasePager {
      */
     private void initPop(LatLng hmPos) {
         // 加载pop 添加到mapview 设置为隐藏
-Log.e("initpop",hmPos.latitude+";"+hmPos.longitude);
+        Log.e("initpop", hmPos.latitude + ";" + hmPos.longitude);
         pop = View.inflate(mActivity, R.layout.pop, null);
         final ViewGroup.LayoutParams params = new MapViewLayoutParams.Builder()
                 .layoutMode(MapViewLayoutParams.ELayoutMode.mapMode)// 按照经纬度设置位置
@@ -211,18 +224,18 @@ Log.e("initpop",hmPos.latitude+";"+hmPos.longitude);
                 .height(MapViewLayoutParams.WRAP_CONTENT)
 //                .yOffset(5)
                 .build();
-        if (pop==null){
-            Log.e("pop","pop为空");
+        if (pop == null) {
+            Log.e("pop", "pop为空");
         }
-        if (mMapView==null){
-            Log.e("pop","mMapView为空");
+        if (mMapView == null) {
+            Log.e("pop", "mMapView为空");
         }
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-        mMapView.addView(pop, params);
-        pop.setVisibility(View.VISIBLE);
+                mMapView.addView(pop, params);
+                pop.setVisibility(View.VISIBLE);
             }
         });
         title = (TextView) pop.findViewById(R.id.title);
@@ -250,7 +263,7 @@ Log.e("initpop",hmPos.latitude+";"+hmPos.longitude);
     /**
      * 拖拽地图
      */
-    class MyStatusListener implements BaiduMap.OnMapStatusChangeListener{
+    class MyStatusListener implements BaiduMap.OnMapStatusChangeListener {
 
         @Override
         public void onMapStatusChangeStart(MapStatus mapStatus) {
@@ -440,9 +453,10 @@ Log.e("initpop",hmPos.latitude+";"+hmPos.longitude);
 
     /**
      * 根据坐标获取位置信息
+     *
      * @param arg0 百度地图坐标
      */
-    private void test(LatLng arg0){
+    private void test(LatLng arg0) {
         GeoCoder search = GeoCoder.newInstance();
 
         search.reverseGeoCode(new ReverseGeoCodeOption().location(arg0));
@@ -463,5 +477,96 @@ Log.e("initpop",hmPos.latitude+";"+hmPos.longitude);
             }
         });
     }
+
+    //    位移-->start
+    private List<Integer> colors;
+    private List<LatLng> points;
+    private PolylineOptions options;
+    private int i = 1;
+    private KDLocation kd;
+    private void startMove() {
+        new Thread() {
+            @Override
+            public void run() {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        kd = getLocation();
+                        Message msg = new Message();
+                        Bundle bundle = new Bundle();
+                        bundle.putDoubleArray("location", new double[]{kd.getLat(), kd.getLon()});
+                        msg.setData(bundle);
+                        msg.what = 1;
+                        myHandler.sendMessage(msg);
+                    }
+                }, 3000, 3000);
+            }
+        }.start();
+    }
+
+    class KDLocation {
+        private double lat;
+        private double lon;
+
+        public KDLocation(double lat, double lon) {
+            this.lat = lat;
+            this.lon = lon;
+        }
+
+        public double getLat() {
+            return lat;
+        }
+
+        public double getLon() {
+            return lon;
+        }
+    }
+
+    public KDLocation getLocation() {
+        KDLocation location;
+        location = new KDLocation(34.618822 + 0.0001 * i, 112.42691 - 0.0001 * i);
+        i++;
+        return location;
+    }
+
+    private List<LatLng> newList = new ArrayList<>();
+    Handler myHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                Bundle data = msg.getData();
+                newList.clear();
+                newList.add(points.get(points.size() - 1));
+                newList.add(new LatLng(data.getDoubleArray("location")[0], data.getDoubleArray("location")[1]));
+                Log.e("上一个", points.get(points.size() - 1).latitude + ";" + points.get(points.size() - 1).longitude);
+                Log.e("下一个", data.getDoubleArray("location")[0] + ";" + data.getDoubleArray("location")[1]);
+                points.add(new LatLng(data.getDoubleArray("location")[0], data.getDoubleArray("location")[1]));
+                options.points(newList);
+                baiduMap.addOverlay(options);
+            }
+        }
+    };
+
+    private void initLines() {
+        options = new PolylineOptions();
+        options.color(Color.RED);//设置折线颜色
+        points = new ArrayList<>();
+        points.add(new LatLng(34.614124, 112.4236));
+        points.add(new LatLng(34.618294, 112.422877));
+        points.add(new LatLng(34.618547, 112.423703));
+        points.add(new LatLng(34.618822, 112.42691));
+        options.points(points);
+        colors = new ArrayList<>();
+        colors.add(Color.RED);
+        colors.add(Color.BLUE);
+        colors.add(Color.GREEN);
+        options.colorsValues(colors);//设置折点颜色
+        options.width(10);
+        options.visible(true);
+        baiduMap.addOverlay(options);
+        Log.e("color", options.getColor() + "颜色");
+    }
+//    位移-->end
 
 }

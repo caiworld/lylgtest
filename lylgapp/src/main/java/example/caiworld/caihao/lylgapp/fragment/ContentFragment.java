@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import example.caiworld.caihao.lylgapp.R;
 import example.caiworld.caihao.lylgapp.base.BasePager;
-import example.caiworld.caihao.lylgapp.pager.FivePager;
 import example.caiworld.caihao.lylgapp.pager.FourPager;
 import example.caiworld.caihao.lylgapp.pager.HomePager;
 import example.caiworld.caihao.lylgapp.pager.SecondPager;
@@ -28,6 +27,7 @@ public class ContentFragment extends Fragment {
     private RadioGroup rGroup;
     private ViewPager viewPager;
     public ArrayList<BasePager> pagerList;
+    private static HomePager homePager;
 
     /**
      * fragment被创建
@@ -86,11 +86,12 @@ public class ContentFragment extends Fragment {
         //默认选中首页
         rGroup.check(R.id.rb_home);
         pagerList = new ArrayList<>();
-        pagerList.add(new HomePager(mActivity));
+        homePager = new HomePager(mActivity);
+        pagerList.add(homePager);
         pagerList.add(new SecondPager(mActivity));
         pagerList.add(new ThirdPager(mActivity));
         pagerList.add(new FourPager(mActivity));
-        pagerList.add(new FivePager(mActivity));
+//        pagerList.add(new FivePager(mActivity));
 
         viewPager.setAdapter(new MyPagerAdapter());
 
@@ -111,9 +112,9 @@ public class ContentFragment extends Fragment {
                     case R.id.rb_affair:
                         viewPager.setCurrentItem(3, false);//第二个参数，去掉去掉切换页面的动画
                         break;
-                    case R.id.rb_set:
-                        viewPager.setCurrentItem(4, false);//第二个参数，去掉去掉切换页面的动画
-                        break;
+//                    case R.id.rb_set:
+//                        viewPager.setCurrentItem(4, false);//第二个参数，去掉去掉切换页面的动画
+//                        break;
                 }
             }
         });

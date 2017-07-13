@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="@color/colorPrimary"
         android:text="求帮忙" />
 
     <FrameLayout
@@ -19,22 +20,24 @@
             android:id="@+id/mapView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></com.baidu.mapapi.map.MapView>
+
         <ImageView
-            android:clickable="true"
-            android:src="@mipmap/me"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="15dp"
             android:id="@+id/iv_moveTOMe"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom|left"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:src="@mipmap/me" />
+
         <ImageView
-            android:paddingBottom="32dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/me2"
             android:layout_width="64dp"
-            android:layout_height="64dp" />
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:paddingBottom="32dp"
+            android:src="@mipmap/me2" />
     </FrameLayout>
 </LinearLayout>

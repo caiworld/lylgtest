@@ -16,7 +16,7 @@
         android:id="@+id/r_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/bottom_tab_bg"
+        android:background="#F3F3F3"
         android:orientation="horizontal">
 
         <RadioButton
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableTop="@drawable/radio_btn_pic2"
-            android:text="新闻中心" />
+            android:text="分享" />
 
         <RadioButton
             android:id="@+id/rb_smart"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableTop="@drawable/radio_btn_pic3"
-            android:text="智慧服务" />
+            android:text="随手送" />
 
         <RadioButton
             android:id="@+id/rb_affair"
@@ -53,15 +53,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableTop="@drawable/radio_btn_pic4"
-            android:text="政务" />
+            android:text="通讯录" />
 
-        <RadioButton
-            android:id="@+id/rb_set"
-            style="@style/my_radio_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:drawableTop="@drawable/radio_btn_pic5"
-            android:text="设置" />
     </RadioGroup>
 </LinearLayout>

@@ -1,33 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/ll_sendPackage"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_username"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="cai" />
 
-    <TextView
-        android:id="@+id/tv_sendAddress"
-        android:textSize="16sp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="洛阳理工学院王城校区" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
 
-    <TextView
-        android:id="@+id/tv_receiveAddress"
-        android:textSize="16sp"
+        <ImageView
+            android:id="@+id/iv_header"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:src="@mipmap/icon" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_header"
+            android:paddingLeft="10dp"
+            android:text="caihao"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_convinient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorPrimary"
+            android:padding="2dp"
+            android:textColor="@color/white"
+            android:text="最方便"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="洛阳理工学院开元校区" />
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发货地：" />
+
+        <TextView
+            android:id="@+id/tv_sendAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="河南省洛阳市洛阳理工学院开元校区" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="目的地：" />
+
+        <TextView
+            android:id="@+id/tv_receiveAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="河南省洛阳市河南科技大学新校区" />
+    </LinearLayout>
 </LinearLayout>
+

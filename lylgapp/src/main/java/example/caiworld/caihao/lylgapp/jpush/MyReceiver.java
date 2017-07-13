@@ -39,6 +39,7 @@ public class MyReceiver extends BroadcastReceiver {
                 //send the Registration Id to your server...
 
             } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+                Log.e("JPush","用户接收到通知了");
                 Logger.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
                 processCustomMessage(context, bundle);
 
@@ -50,7 +51,7 @@ public class MyReceiver extends BroadcastReceiver {
             } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
                 Logger.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
-                //打开自定义的Activity
+                //打开自定义的Activity//TODO 应该跳转到订单详情页
                 Intent i = new Intent(context, TestActivity.class);
                 i.putExtras(bundle);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,6 +78,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     // 打印所有的 intent extra 数据
     private static String printBundle(Bundle bundle) {
+//        TODO 找到用户名
         StringBuilder sb = new StringBuilder();
         for (String key : bundle.keySet()) {
             if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
