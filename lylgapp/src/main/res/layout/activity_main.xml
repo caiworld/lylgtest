@@ -32,7 +32,8 @@
                 android:text="首页"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
-            <ImageButton
+            <ImageView
+                android:clickable="true"
                 android:visibility="invisible"
                 android:id="@+id/ibt_add"
                 android:layout_marginRight="10dp"

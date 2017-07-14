@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableTop="@drawable/radio_btn_pic3"
-            android:text="随手送" />
+            android:text="收发" />
 
         <RadioButton
             android:id="@+id/rb_affair"

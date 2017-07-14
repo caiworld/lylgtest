@@ -6,6 +6,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -48,6 +49,7 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
     private String goodsPrice;
     private String goodsWeight;
     private EditText etComment;
+    private Button moreHelp;
 
 
     @Override
@@ -71,9 +73,17 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
         goods = (TextView) findViewById(R.id.tv_goods);
         tvTip = (TextView) findViewById(R.id.tv_tip);
         etComment = (EditText) findViewById(R.id.et_comment);
+        moreHelp = (Button) findViewById(R.id.bt_moreHelp);
     }
 
     private void initListener() {
+        moreHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HelpActivity.this, MoreHelpActivity.class);
+                startActivity(intent);
+            }
+        });
         llSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

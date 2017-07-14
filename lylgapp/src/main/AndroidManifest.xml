@@ -129,7 +129,6 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="EtQV9L22p1GAYz8Ov0Lia5qWcLTabso4" />
-
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -291,8 +290,8 @@
             android:value="a8602da3392b2da7f926fc7c" />
         <!-- </>值来自开发者平台取得的AppKey -->
         <!-- End  JPush -->
-        <activity android:name=".PeopleDetailActivity"
-            ></activity>
+        <activity android:name=".PeopleDetailActivity" />
+        <activity android:name=".MoreHelpActivity"></activity>
     </application>
 
 </manifest>

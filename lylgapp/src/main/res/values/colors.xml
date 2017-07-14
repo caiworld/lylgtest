@@ -7,5 +7,6 @@
     <color name="buy">#33aaaa</color>
     <color name="white">#ffffff</color>
     <color name="gray">#F0F0F0</color>
+    <color name="darkgray">#aaffffff</color>
 
 </resources>

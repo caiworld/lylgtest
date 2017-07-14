@@ -1,14 +1,15 @@
-package example.caiworld.caihao.lylgapp.pager;
+package example.caiworld.caihao.lylgapp.fragment;
 
-import android.app.Activity;
+
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DialogTitle;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -26,81 +27,78 @@ import cn.bmob.v3.listener.FindListener;
 import example.caiworld.caihao.lylgapp.MainActivity;
 import example.caiworld.caihao.lylgapp.PackageDetailActivity;
 import example.caiworld.caihao.lylgapp.R;
-import example.caiworld.caihao.lylgapp.base.BasePager;
 import example.caiworld.caihao.lylgapp.bean.SenderDetail;
 
 /**
- * Created by caihao on 2017/5/18.
+ * Created by caihao on 2017/7/13.
  */
-public class ThirdPager extends BasePager {
+public class SSSFragment extends Fragment {
 
     private ListView lvSendPackage;
     private List<SenderDetail> packages;
     private MyAdapter adapter;
-    private MyHandler handler;
     private ProgressDialog dialog;
 
-    public ThirdPager(Activity activity) {
-        super(activity);
-    }
-
-    class MyHandler extends Handler {
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (dialog.isShowing()) {
+                dialog.dismiss();
                 if (msg.what == 1) {
-                    dialog.dismiss();
                     adapter.notifyDataSetChanged();
                 }
             } else {
                 packages.clear();//用户取消了加载，则将数据清空，防止加载多遍
             }
         }
-    }
+    };
 
+    @Nullable
     @Override
-    public View initView() {
-        View view = View.inflate(mActivity, R.layout.pager_third, null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.pager_third, null);
         lvSendPackage = (ListView) view.findViewById(R.id.lv_sendPackage);
-        handler = new MyHandler();
         packages = new ArrayList<>();
         adapter = new MyAdapter();
         lvSendPackage.setAdapter(adapter);
         lvSendPackage.setOnItemClickListener(new MyItemClickListener());
+        ((MainActivity) getActivity()).getTvTitle().setText("随手送");
+        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
         return view;
     }
 
-    private boolean isFirst = true;
+//    private boolean isFirst = true;
 
     @Override
-    public void initData() {
-        ((MainActivity) mActivity).getTvTitle().setText("随手送");
-        ((MainActivity) mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
-        if (isFirst) {
-            dialog = new ProgressDialog(mActivity);
-            dialog.setTitle("加载中");
-            dialog.show();
-            packages.clear();
+    public void onStart() {
+        super.onStart();
+        ((MainActivity) getActivity()).getTvTitle().setText("送");
+        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
+//        if (isFirst) {
+        dialog = new ProgressDialog(getActivity());
+        dialog.setTitle("加载中");
+        dialog.show();
+        packages.clear();
 
-            BmobQuery<SenderDetail> bmobQuery = new BmobQuery<>();
-            bmobQuery.findObjects(new FindListener<SenderDetail>() {
-                @Override
-                public void done(List<SenderDetail> list, BmobException e) {
-                    if (e == null) {
-                        for (SenderDetail p : list) {
-                            Log.e("详情1", p.toString());
-                        }
-                        packages.addAll(list);
-                        handler.sendEmptyMessage(1);
-                        isFirst = false;
-                    } else {
-                        Log.e("RequestPackage", "查询失败");
+        BmobQuery<SenderDetail> bmobQuery = new BmobQuery<>();
+        bmobQuery.findObjects(new FindListener<SenderDetail>() {
+            @Override
+            public void done(List<SenderDetail> list, BmobException e) {
+                if (e == null) {
+                    for (SenderDetail p : list) {
+                        Log.e("详情1", p.toString());
                     }
+                    packages.addAll(list);
+                    handler.sendEmptyMessage(1);
+//                        isFirst = false;
+                } else {
+                    Log.e("RequestPackage", "查询失败");
+                    handler.sendEmptyMessage(2);
                 }
-            });
-        }
-
+            }
+        });
+//        }
     }
 
     class MyAdapter extends BaseAdapter {
@@ -124,7 +122,7 @@ public class ThirdPager extends BasePager {
         public View getView(int position, View convertView, ViewGroup parent) {
             PackageHolder holder;
             if (convertView == null) {
-                convertView = View.inflate(mActivity, R.layout.item_sendpackage, null);
+                convertView = View.inflate(getActivity(), R.layout.item_sendpackage, null);
                 holder = new PackageHolder();
                 holder.ivHeader = (ImageView) convertView.findViewById(R.id.iv_header);
                 holder.username = (TextView) convertView.findViewById(R.id.tv_username);
@@ -179,7 +177,7 @@ public class ThirdPager extends BasePager {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(mActivity, PackageDetailActivity.class);
+            Intent intent = new Intent(getActivity(), PackageDetailActivity.class);
             SenderDetail senderDetail = packages.get(position);
             intent.putExtra("username", senderDetail.getUsername());
             intent.putExtra("sendAddress", senderDetail.getSendAddress());
@@ -193,7 +191,7 @@ public class ThirdPager extends BasePager {
             intent.putExtra("pickUpTime", senderDetail.getPickUpTime());
             intent.putExtra("goodsDetail", senderDetail.getGoodsDetail());
             intent.putExtra("comment", senderDetail.getComment());
-            mActivity.startActivity(intent);
+            getActivity().startActivity(intent);
         }
     }
 }

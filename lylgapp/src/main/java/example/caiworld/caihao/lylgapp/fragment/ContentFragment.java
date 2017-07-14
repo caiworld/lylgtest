@@ -19,7 +19,7 @@ import example.caiworld.caihao.lylgapp.base.BasePager;
 import example.caiworld.caihao.lylgapp.pager.FourPager;
 import example.caiworld.caihao.lylgapp.pager.HomePager;
 import example.caiworld.caihao.lylgapp.pager.SecondPager;
-import example.caiworld.caihao.lylgapp.pager.ThirdPager;
+import example.caiworld.caihao.lylgapp.pager.ThirdPager2;
 
 public class ContentFragment extends Fragment {
 
@@ -89,9 +89,9 @@ public class ContentFragment extends Fragment {
         homePager = new HomePager(mActivity);
         pagerList.add(homePager);
         pagerList.add(new SecondPager(mActivity));
-        pagerList.add(new ThirdPager(mActivity));
+//        pagerList.add(new ThirdPager(mActivity));
+        pagerList.add(new ThirdPager2(mActivity));
         pagerList.add(new FourPager(mActivity));
-//        pagerList.add(new FivePager(mActivity));
 
         viewPager.setAdapter(new MyPagerAdapter());
 
@@ -128,14 +128,14 @@ public class ContentFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 //页面被选中时调用
-                if (position==0){
+                if (position == 0) {
                     //TODO 因为当切换pager之后，地图变成了好多黑线（初步解决方案）
                     pagerList.remove(0);
-                    pagerList.add(0,new HomePager(mActivity));
+                    pagerList.add(0, new HomePager(mActivity));
                 }
                 //调用各个页面的初始化数据的方法，这样可以防止viewpager本身的预加载
                 pagerList.get(position).initData();
-                Log.e("页面被选中：",position+"");
+                Log.e("页面被选中：", position + "");
             }
 
             @Override

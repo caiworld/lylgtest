@@ -14,6 +14,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Button
+            android:visibility="gone"
+            android:id="@+id/bt_moreHelp"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="高级帮助" />
+
         <LinearLayout
             android:id="@+id/ll_send"
             android:layout_width="match_parent"
@@ -167,13 +176,14 @@
                 android:layout_gravity="center_vertical"
                 android:text=" > " />
         </LinearLayout>
+
         <EditText
-            android:hint="备注"
             android:id="@+id/et_comment"
-            android:lines="3"
-            android:maxLines="3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:hint="备注"
+            android:lines="3"
+            android:maxLines="3" />
         <!--跑腿费规则-->
         <TextView
             android:id="@+id/tv_charge"
@@ -207,7 +217,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/buy"
+            android:background="@color/colorPrimary"
             android:onClick="payment"
             android:text="去下单" />
     </LinearLayout>
