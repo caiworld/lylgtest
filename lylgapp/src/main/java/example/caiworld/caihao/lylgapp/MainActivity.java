@@ -1,9 +1,11 @@
 package example.caiworld.caihao.lylgapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,18 +25,22 @@ import android.widget.Toast;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
+import de.hdodenhof.circleimageview.CircleImageView;
+import example.caiworld.caihao.lylgapp.bean.Dynamic;
 import example.caiworld.caihao.lylgapp.fragment.ContentFragment;
 import example.caiworld.caihao.lylgapp.jpush.ExampleUtil;
 import example.caiworld.caihao.lylgapp.jpush.Logger;
+import example.caiworld.caihao.lylgapp.pager.AllDynamicPager;
 import example.caiworld.caihao.lylgapp.pager.HomePager;
 
 public class MainActivity extends AppCompatActivity {
-//TODO 右上角加号图标设置
     private FrameLayout flMain;
     private static final String CONTENT_FRAGMENT = "fragment_content";
     private ContentFragment contentFragment;
@@ -41,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private static String tag;
     private TextView tvTitle;
     private DrawerLayout dl;
-    private ImageView ibtAdd;
+    private ImageView ibtAdd1, ibtAdd2;
+    private CircleImageView menuHeader;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,17 +63,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         tvTitle = (TextView) findViewById(R.id.tv_title);
-        ibtAdd = (ImageView) findViewById(R.id.ibt_add);
+        ibtAdd1 = (ImageView) findViewById(R.id.ibt_add1);
+        ibtAdd2 = (ImageView) findViewById(R.id.ibt_add2);
         dl = (DrawerLayout) findViewById(R.id.dl);
+        menuHeader = (CircleImageView) findViewById(R.id.menu_header);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);//显示HomeAsUp这个按钮
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        }
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);//显示HomeAsUp这个按钮
+//
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+//        }
+        menuHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dl.openDrawer(GravityCompat.START);
+            }
+        });
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -73,29 +91,61 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_quit:
                         dl.closeDrawers();
                         break;
+                    case R.id.nav_certificate:
+                        //去认证界面
+                        Intent intent = new Intent(MainActivity.this, CertifacateActivity.class);
+                        startActivity(intent);
+                        dl.closeDrawers();
+                        break;
                 }
                 Toast.makeText(MainActivity.this, "点击了", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
+        ibtAdd1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PunishedDynamic.class);
+                startActivityForResult(intent, 10);
+            }
+        });
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                dl.openDrawer(GravityCompat.START);
-                break;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 10 && resultCode == 10) {
+            String content = data.getStringExtra("content");
+            String date = data.getStringExtra("date");
+            AllDynamicPager allDynamic = contentFragment.getSecondPager2().getAllDynamic();
+            allDynamic.getDynamics().add(0,new Dynamic(R.mipmap.h2,tag,content,null,date,0,null));
+            allDynamic.getHandler().sendEmptyMessage(3);
         }
-        return true;
     }
+
+    //    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                dl.openDrawer(GravityCompat.START);
+//                break;
+//        }
+//        return true;
+//    }
 
     public TextView getTvTitle() {
         return tvTitle;
     }
 
-    public ImageView getIbtAdd(){
-        return ibtAdd;
+    public ImageView getIbtAdd1() {
+        return ibtAdd1;
+    }
+
+    public ImageView getIbtAdd2() {
+        return ibtAdd2;
+    }
+
+    public Fragment getFragment() {
+        return contentFragment;
     }
 
     private void init() {

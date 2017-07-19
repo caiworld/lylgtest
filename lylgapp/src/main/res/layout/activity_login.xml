@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="example.caiworld.caihao.lylgapp.LoginActivity">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/logo2" />
+
     <LinearLayout
+        android:id="@+id/ll"
+        android:layout_marginTop="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:orientation="vertical">
 
         <EditText
@@ -29,17 +38,17 @@
             android:inputType="textPassword" />
 
         <Button
-            android:onClick="login"
-            android:layout_marginTop="10dp"
-            android:background="@color/login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:onClick="login"
             android:text="@string/login" />
 
         <LinearLayout
-            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,12 +56,12 @@
                 android:text="@string/describe1" />
 
             <TextView
-                android:onClick="toRegister"
-                android:clickable="true"
-                android:textColor="@color/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/describe2" />
+                android:clickable="true"
+                android:onClick="toRegister"
+                android:text="@string/describe2"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

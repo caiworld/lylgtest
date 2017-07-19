@@ -76,7 +76,7 @@ public class ThirdPager extends BasePager {
     @Override
     public void initData() {
         ((MainActivity) mActivity).getTvTitle().setText("随手送");
-        ((MainActivity) mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
+//        ((MainActivity) mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
         if (isFirst) {
             dialog = new ProgressDialog(mActivity);
             dialog.setTitle("加载中");

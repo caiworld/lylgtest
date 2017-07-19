@@ -114,7 +114,7 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/logo2"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -129,14 +129,17 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="EtQV9L22p1GAYz8Ov0Lia5qWcLTabso4" />
+
         <activity
             android:name=".LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -291,7 +294,18 @@
         <!-- </>值来自开发者平台取得的AppKey -->
         <!-- End  JPush -->
         <activity android:name=".PeopleDetailActivity" />
-        <activity android:name=".MoreHelpActivity"></activity>
+        <activity android:name=".MoreHelpActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CertifacateActivity" />
+        <activity android:name=".PunishedDynamic"></activity>
     </application>
 
 </manifest>

@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion '24.0.2'
 
     /**兼容Android6.0系统所需，如果这句话报错，可在dependencies标签下使用compile 'cn.bmob.android:http-legacy:1.0'**/
     useLibrary 'org.apache.http.legacy'
@@ -13,6 +13,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -26,7 +27,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':easeUI')
-    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     //bmob-sdk：Bmob的android sdk包，包含了Bmob的数据存储、文件等服务，以下是最新的bmob-sdk:
     compile 'cn.bmob.android:bmob-sdk:3.5.5'
     //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
@@ -35,7 +36,11 @@ dependencies {
     //多选择器
     compile 'com.github.stfalcon:universalpickerdialog:0.1.0'
     //NavigationView
-    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:design:25.3.1'
     //圆图片
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    //智能下拉刷新
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.1'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+    //一个开源gif控件
 }

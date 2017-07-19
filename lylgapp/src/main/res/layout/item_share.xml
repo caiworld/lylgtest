@@ -37,6 +37,8 @@
                 android:text="你awluifgluieghaselksbne射给你看班社 ie了来看了你能不能 来吧额我I酷不能给你啊不了I比拉尔kin比啊了" />
 
             <LinearLayout
+                android:id="@+id/ll_pics"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
@@ -45,12 +47,14 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/iv1"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:src="@mipmap/fa2" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/iv2"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
@@ -59,7 +63,7 @@
                 <ImageView
                     android:layout_width="90dp"
                     android:layout_height="90dp"
-                    android:visibility="invisible" />
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -78,9 +82,10 @@
             android:textSize="10sp" />
 
         <ImageView
+            android:clickable="true"
             android:id="@+id/iv_like"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_marginRight="30dp"
             android:layout_toLeftOf="@+id/iv_comments"
             android:src="@mipmap/like" />

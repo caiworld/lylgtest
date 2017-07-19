@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import example.caiworld.caihao.lylgapp.MainActivity;
@@ -23,6 +24,8 @@ public class ThirdPager2 extends BasePager implements View.OnClickListener {
     private SSSFragment sssFragment;//随手送Fragment
     private SFSFragment sfsFragment;//顺风送Fragment
     private FragmentTransaction mTransaction;
+    private ImageView ibtAdd2;
+    private ImageView ibtAdd1;
 
     public ThirdPager2(Activity activity) {
         super(activity);
@@ -30,6 +33,8 @@ public class ThirdPager2 extends BasePager implements View.OnClickListener {
 
     @Override
     public View initView() {
+        ibtAdd1 = ((MainActivity) mActivity).getIbtAdd1();
+        ibtAdd2 = ((MainActivity) mActivity).getIbtAdd2();
         View view = View.inflate(mActivity, R.layout.pager_third2, null);
 //        fl_content = (FrameLayout) view.findViewById(R.id.fl_content);
 
@@ -54,7 +59,9 @@ public class ThirdPager2 extends BasePager implements View.OnClickListener {
     @Override
     public void initData() {
         ((MainActivity) mActivity).getTvTitle().setText("收");
-        ((MainActivity) mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
+
+        ibtAdd1.setVisibility(View.GONE);
+        ibtAdd2.setVisibility(View.GONE);
         //获取到fragment的管理者
 
         fragmentManager = mActivity.getFragmentManager();

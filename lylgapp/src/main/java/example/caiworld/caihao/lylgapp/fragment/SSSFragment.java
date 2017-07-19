@@ -64,7 +64,7 @@ public class SSSFragment extends Fragment {
         lvSendPackage.setAdapter(adapter);
         lvSendPackage.setOnItemClickListener(new MyItemClickListener());
         ((MainActivity) getActivity()).getTvTitle().setText("随手送");
-        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
+//        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -74,7 +74,7 @@ public class SSSFragment extends Fragment {
     public void onStart() {
         super.onStart();
         ((MainActivity) getActivity()).getTvTitle().setText("送");
-        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
+//        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
 //        if (isFirst) {
         dialog = new ProgressDialog(getActivity());
         dialog.setTitle("加载中");

@@ -1,6 +1,7 @@
 package example.caiworld.caihao.lylgapp.base;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 /**
@@ -9,7 +10,6 @@ import android.view.View;
 public abstract class BasePager {
     public Activity mActivity;
     public View view;
-
     public BasePager(Activity activity) {
         mActivity = activity;
         view = initView();

@@ -18,7 +18,7 @@ import example.caiworld.caihao.lylgapp.R;
 import example.caiworld.caihao.lylgapp.base.BasePager;
 import example.caiworld.caihao.lylgapp.pager.FourPager;
 import example.caiworld.caihao.lylgapp.pager.HomePager;
-import example.caiworld.caihao.lylgapp.pager.SecondPager;
+import example.caiworld.caihao.lylgapp.pager.SecondPager2;
 import example.caiworld.caihao.lylgapp.pager.ThirdPager2;
 
 public class ContentFragment extends Fragment {
@@ -28,6 +28,7 @@ public class ContentFragment extends Fragment {
     private ViewPager viewPager;
     public ArrayList<BasePager> pagerList;
     private static HomePager homePager;
+    private SecondPager2 secondPager2;
 
     /**
      * fragment被创建
@@ -38,6 +39,7 @@ public class ContentFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = getActivity();//获取到该fragment所依赖的activity
+        Log.e("oncreate","contentfragment");
     }
 
     /**
@@ -51,6 +53,7 @@ public class ContentFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+Log.e("oncreateview","contentfragment");
 //        return super.onCreateView(inflater, container, savedInstanceState);
         return initView();
     }
@@ -75,8 +78,11 @@ public class ContentFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.e("onactivitycreated","contentfragment");
         initData();
     }
+
+    public SecondPager2 getSecondPager2(){return secondPager2;}
 
     /**
      * 初始化数据
@@ -88,7 +94,9 @@ public class ContentFragment extends Fragment {
         pagerList = new ArrayList<>();
         homePager = new HomePager(mActivity);
         pagerList.add(homePager);
-        pagerList.add(new SecondPager(mActivity));
+        secondPager2 = new SecondPager2(mActivity);
+        pagerList.add(secondPager2);
+//        pagerList.add(new SecondPager(mActivity));
 //        pagerList.add(new ThirdPager(mActivity));
         pagerList.add(new ThirdPager2(mActivity));
         pagerList.add(new FourPager(mActivity));
@@ -132,6 +140,10 @@ public class ContentFragment extends Fragment {
                     //TODO 因为当切换pager之后，地图变成了好多黑线（初步解决方案）
                     pagerList.remove(0);
                     pagerList.add(0, new HomePager(mActivity));
+                }
+                if (position==2){
+                    pagerList.remove(2);
+                    pagerList.add(2, new ThirdPager2(mActivity));
                 }
                 //调用各个页面的初始化数据的方法，这样可以防止viewpager本身的预加载
                 pagerList.get(position).initData();

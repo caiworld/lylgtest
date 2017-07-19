@@ -53,7 +53,7 @@ public class SFSFragment extends Fragment {
     private MapView mapView;
     private ListView lvSfs;
 
-        private boolean isFirstLocate = true;//用来判断是否是第一次移动位置，默认是true，移动一次之后置为false
+    private boolean isFirstLocate = true;//用来判断是否是第一次移动位置，默认是true，移动一次之后置为false
     private BaiduMap baiduMap;
     private LocationClient mLocationClient;
     private BDLocation myLocation;
@@ -73,7 +73,7 @@ public class SFSFragment extends Fragment {
         lvSfs.setAdapter(new SFSAdapter());
         init();
         ((MainActivity) getActivity()).getTvTitle().setText("发");
-        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
+//        ((MainActivity) getActivity()).getIbtAdd().setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -228,6 +228,9 @@ public class SFSFragment extends Fragment {
         search.setOnGetGeoCodeResultListener(new OnGetGeoCoderResultListener() {
             @Override
             public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+                if (geoCodeResult.getLocation() == null) {
+                    return;
+                }
                 Log.e("geocoderesult", geoCodeResult.getLocation().latitude + ";" + geoCodeResult.getLocation().longitude);
                 if (arg0 == 0) {//from
                     fromLocate = new LatLng(geoCodeResult.getLocation().latitude, geoCodeResult.getLocation().longitude);
@@ -290,13 +293,13 @@ public class SFSFragment extends Fragment {
             currentPosition.append("经线：").append(bdLocation.getLongitude()).append("\n");
             Log.e("SendAddress：", bdLocation.getLocationDescribe());
             if (isFirstLocate) {//第一次移动到“我”的位置
-            MapStatusUpdate mapstatusUpdatePoint = MapStatusUpdateFactory
-                    .newLatLng(new LatLng(lat, lon));
-            // 设置中心点 默认是天安门
-            baiduMap.setMapStatus(mapstatusUpdatePoint);
-            if (TextUtils.isEmpty(bdLocation.getLocationDescribe())) {
-                Log.e("sendactivity", "我是假的");
-            }
+                MapStatusUpdate mapstatusUpdatePoint = MapStatusUpdateFactory
+                        .newLatLng(new LatLng(lat, lon));
+                // 设置中心点 默认是天安门
+                baiduMap.setMapStatus(mapstatusUpdatePoint);
+                if (TextUtils.isEmpty(bdLocation.getLocationDescribe())) {
+                    Log.e("sendactivity", "我是假的");
+                }
                 isFirstLocate = false;
             }
             //让小圆圈出现在“我”的位置上

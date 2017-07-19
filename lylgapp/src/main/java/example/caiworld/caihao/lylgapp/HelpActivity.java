@@ -1,12 +1,16 @@
 package example.caiworld.caihao.lylgapp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -20,7 +24,7 @@ import cn.bmob.v3.listener.SaveListener;
 import example.caiworld.caihao.lylgapp.bean.SenderDetail;
 import stfalcon.universalpickerdialog.UniversalPickerDialog;
 
-public class HelpActivity extends AppCompatActivity implements UniversalPickerDialog.OnPickListener {
+public class HelpActivity extends AppCompatActivity implements UniversalPickerDialog.OnPickListener, View.OnClickListener {
 
     private LinearLayout llGoodsDetail;//物品详情
     private LinearLayout llReceiveTime;//收货时间
@@ -49,7 +53,9 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
     private String goodsPrice;
     private String goodsWeight;
     private EditText etComment;
-    private Button moreHelp;
+    private CheckBox cbPay1;
+    private CheckBox cbPay2;
+    private CheckBox cbPay3;
 
 
     @Override
@@ -73,17 +79,9 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
         goods = (TextView) findViewById(R.id.tv_goods);
         tvTip = (TextView) findViewById(R.id.tv_tip);
         etComment = (EditText) findViewById(R.id.et_comment);
-        moreHelp = (Button) findViewById(R.id.bt_moreHelp);
     }
 
     private void initListener() {
-        moreHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HelpActivity.this, MoreHelpActivity.class);
-                startActivity(intent);
-            }
-        });
         llSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,7 +241,7 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
         sAbsAddress = data.getStringExtra("sabsAddress");
         sDetailAddress = data.getStringExtra("sdetailAddress");
         lat = data.getDoubleExtra("lat", 36.565413);
-        lon = data.getDoubleExtra("lon",129.354125);
+        lon = data.getDoubleExtra("lon", 129.354125);
         sName = data.getStringExtra("sname");
         sNumber = data.getStringExtra("snumber");
         if (TextUtils.isEmpty(sAbsAddress)) {//发货地址为空
@@ -260,26 +258,64 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.cb_pay1:
+                cbPay2.setChecked(false);
+                cbPay3.setChecked(false);
+                cbPay1.setChecked(true);
+                break;
+            case R.id.cb_pay2:
+                cbPay1.setChecked(false);
+                cbPay3.setChecked(false);
+                cbPay2.setChecked(true);
+                break;
+            case R.id.cb_pay3:
+                cbPay1.setChecked(false);
+                cbPay2.setChecked(false);
+                cbPay3.setChecked(true);
+                break;
+        }
+    }
+
     public void payment(View view) {
         //TODO 数据校验，初赛不做
-        uploadData();
-
+        Dialog dialog = new Dialog(this);
+        dialog.setTitle("选择支付方式");
+        View v = View.inflate(this, R.layout.dialog_pay, null);
+        cbPay1 = (CheckBox) v.findViewById(R.id.cb_pay1);
+        cbPay2 = (CheckBox) v.findViewById(R.id.cb_pay2);
+        cbPay3 = (CheckBox) v.findViewById(R.id.cb_pay3);
+        cbPay1.setOnClickListener(this);
+        cbPay2.setOnClickListener(this);
+        cbPay3.setOnClickListener(this);
+        Button btPay = (Button) v.findViewById(R.id.bt_pay);
+        btPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //确认支付
+                uploadData();
+            }
+        });
+        dialog.setContentView(v);
+        dialog.show();
     }
 
     /**
-     * <p>
+     * <p/>
      * private String username;//用户名
-     * <p>
+     * <p/>
      * private String sendAddress;//发货人地址
      * private double lat;//发货人纬度
      * private double lon;//发货人经度
      * private String sendName;//发货人姓名
      * private String sendNumber;//发货人号码
-     * <p>
+     * <p/>
      * private String receiveAddress;//收货人地址
      * private String receiveName;//收货人名字
      * private String receiveNumber;//收货人号码
-     * <p>
+     * <p/>
      * private String pickUpTime;//取货时间
      * private String goodsDetail;//物品信息
      * private String comment;//备注
@@ -287,16 +323,16 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
     private void uploadData() {
         SenderDetail senderDetail = new SenderDetail();
         senderDetail.setUsername(MainActivity.getUserName());
-        senderDetail.setSendAddress(sAddress+"_"+sAbsAddress+"_"+sDetailAddress);
+        senderDetail.setSendAddress(sAddress + "_" + sAbsAddress + "_" + sDetailAddress);
         senderDetail.setLat(lat);
         senderDetail.setLon(lon);
         senderDetail.setSendName(sName);
         senderDetail.setSendNumber(sNumber);
-        senderDetail.setReceiveAddress(rAddress+"_"+rAbsAddress+"_"+rDetailAddress);
+        senderDetail.setReceiveAddress(rAddress + "_" + rAbsAddress + "_" + rDetailAddress);
         senderDetail.setReceiveName(rName);
         senderDetail.setReceiveNumber(rNumber);
         senderDetail.setPickUpTime("7-7 15:00");
-        senderDetail.setGoodsDetail(goodsFind+"/"+goodsPrice+"/"+goodsWeight);
+        senderDetail.setGoodsDetail(goodsFind + "/" + goodsPrice + "/" + goodsWeight);
         senderDetail.setComment(etComment.getText().toString().trim());
         senderDetail.save(new SaveListener<String>() {
             @Override
@@ -309,4 +345,5 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
             }
         });
     }
+
 }

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,8 @@ public class HomePager extends BasePager {
     private double lon;
     private TextView title;
     private View pop;
+    private ImageView ibtAdd2;
+    private ImageView ibtAdd1;
 
     public HomePager(Activity activity) {
         super(activity);
@@ -74,6 +77,8 @@ public class HomePager extends BasePager {
 
     @Override
     public View initView() {
+        ibtAdd1 = ((MainActivity) mActivity).getIbtAdd1();
+        ibtAdd2 = ((MainActivity) mActivity).getIbtAdd2();
         view = View.inflate(mActivity, R.layout.pager_home, null);
         helpMe = (Button) view.findViewById(R.id.bt_helpMe);//求帮助
         helpMe.setOnClickListener(new View.OnClickListener() {
@@ -151,13 +156,15 @@ public class HomePager extends BasePager {
     @Override
     public void initData() {
         ((MainActivity)mActivity).getTvTitle().setText("首页");
-        ((MainActivity)mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
-        drawZBLD();
+
+        ibtAdd1.setVisibility(View.GONE);
+        ibtAdd2.setVisibility(View.GONE);
+//        drawZBLD();
     }
 
     private void drawZBLD() {
-        BitmapDescriptor bitmapDes = BitmapDescriptorFactory
-                .fromResource(R.mipmap.pinlove);
+//        BitmapDescriptor bitmapDes = BitmapDescriptorFactory
+//                .fromResource(R.mipmap.pinlove);
 
         if (lat <= 0 || lon <= 0) {//还未获取当前位置
             Log.e("homepager", "还未获取当前位置");
@@ -174,12 +181,15 @@ public class HomePager extends BasePager {
 //        baiduMap.addOverlay(markerOptions);
 
         MarkerOptions markerOptions;
+        BitmapDescriptor bitmapDes = BitmapDescriptorFactory
+                .fromResource(R.mipmap.z1);
         markerOptions = new MarkerOptions().title("向北")
                 .position(new LatLng(lat + 0.001, lon))
                 .icon(bitmapDes)
                 .title("hao");
         baiduMap.addOverlay(markerOptions);
-
+        bitmapDes = BitmapDescriptorFactory
+                .fromResource(R.mipmap.z2);
         markerOptions = new MarkerOptions().title("向北")
                 .position(new LatLng(lat - 0.001, lon))
                 .icon(bitmapDes).title("caihao");
@@ -193,15 +203,17 @@ public class HomePager extends BasePager {
 //                .icons(bitmaps)// 显示多个图片来回切换 帧动画
 //                .period(10);// 设置多少帧刷新一次图片资源，Marker动画的间隔时间，值越小动画越快
 //        baiduMap.addOverlay(markerOptions);
-
+        bitmapDes = BitmapDescriptorFactory
+                .fromResource(R.mipmap.z3);
         markerOptions = new MarkerOptions().title("向东")
                 .position(new LatLng(lat, lon + 0.001))
-                .icon(bitmapDes).title("nihao");
+                .icon(bitmapDes).title("zzz");
         baiduMap.addOverlay(markerOptions);
-
+        bitmapDes = BitmapDescriptorFactory
+                .fromResource(R.mipmap.z4);
         markerOptions = new MarkerOptions().title("向西南")
                 .position(new LatLng(lat - 0.001, lon - 0.001))
-                .icon(bitmapDes).title("haha");
+                .icon(bitmapDes).title("bao");
         baiduMap.addOverlay(markerOptions);
         baiduMap.setOnMarkerClickListener(new MyClickListener());
         baiduMap.setOnMapStatusChangeListener(new MyStatusListener());

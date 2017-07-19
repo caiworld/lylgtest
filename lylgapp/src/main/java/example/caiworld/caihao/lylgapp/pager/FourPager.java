@@ -43,6 +43,8 @@ public class FourPager extends BasePager {
     private List<LYLGBmobUser> friends;
     private FriendsAdapter adapter;
     private ProgressDialog dialog;
+    private ImageView ibtAdd1;
+    private ImageView ibtAdd2;
 
     public FourPager(Activity activity) {
         super(activity);
@@ -59,7 +61,7 @@ public class FourPager extends BasePager {
                     Toast.makeText(mActivity, "访问服务器失败", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
-            }else{//用户取消了加载
+            } else {//用户取消了加载
                 friends.clear();//清空之前的数据
                 friends.add(new LYLGBmobUser("客服", "kefu", ""));//把客服重新添加进去
                 adapter.notifyDataSetChanged();
@@ -69,6 +71,8 @@ public class FourPager extends BasePager {
 
     @Override
     public View initView() {
+        ibtAdd1 = ((MainActivity) mActivity).getIbtAdd1();
+        ibtAdd2 = ((MainActivity) mActivity).getIbtAdd2();
         friends = new ArrayList<>();
         friends.add(new LYLGBmobUser("客服", "kefu", ""));//添加客服，以免一个好友也没有
         View view = View.inflate(mActivity, R.layout.pager_four, null);
@@ -83,6 +87,7 @@ public class FourPager extends BasePager {
                 // EaseUI封装的聊天界面需要这两个参数，聊天者的username，以及聊天类型，单聊还是群聊
                 intent.putExtra("userId", friends.get(position).getUsername());
                 intent.putExtra("chatType", EMMessage.ChatType.Chat);
+                intent.putExtra("headerPic", bitmaps[position % 3]);
                 mActivity.startActivity(intent);
             }
         });
@@ -94,8 +99,9 @@ public class FourPager extends BasePager {
     @Override
     public void initData() {
         ((MainActivity) mActivity).getTvTitle().setText("通讯录");
-        ((MainActivity) mActivity).getIbtAdd().setImageDrawable(mActivity.getResources().getDrawable(R.mipmap.add));
-        ((MainActivity) mActivity).getIbtAdd().setVisibility(View.VISIBLE);
+
+        ibtAdd1.setVisibility(View.GONE);
+        ibtAdd2.setVisibility(View.VISIBLE);
         //TODO 在这里写的话则requestServer()中获取不到friends.size();
         //每次进入这个页面的时候都去请求服务器获取好友数据
         if (isFirst) {
@@ -121,8 +127,13 @@ public class FourPager extends BasePager {
                     friends.add(new LYLGBmobUser("客服", "kefu", ""));//把客服重新添加进去
                     friends.addAll(list);
                     for (LYLGBmobUser user : list) {
-                        Log.e("查询user", user.getUsername() + ":" + list.size());
-                        Log.e("friends.size", friends.size() + "");
+                        if (user.getUsername().equals(MainActivity.getUserName())) {
+                            friends.remove(user);//剔除自己
+                            break;
+                        }
+
+//                        Log.e("查询user", user.getUsername() + ":" + list.size());
+//                        Log.e("friends.size", friends.size() + "");
                     }
                     handler.sendEmptyMessage(1);
                 } else {//查询失败

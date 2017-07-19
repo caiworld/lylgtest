@@ -1,22 +1,36 @@
 package example.caiworld.caihao.lylgapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMMessage;
+
+import java.util.List;
+import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+import example.caiworld.caihao.lylgapp.utils.ImageCompressUtil;
 
 public class PeopleDetailActivity extends AppCompatActivity {
 
     private Button sendMessage;
     private String userId;
+    private TextView tvUserName;
+    private CircleImageView ivHeader;
+    private TextView tvIntroduce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +41,16 @@ public class PeopleDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        introduces = new String[]{"我掉钱了。。。","我捡钱了，高兴","热死了","今天天气好热，吃不下饭，吃的是饺子。放的辣有点多，吃的时候热死。"};
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        tvIntroduce = (TextView) findViewById(R.id.tv_introduce);
+        ivHeader = (CircleImageView) findViewById(R.id.iv_header);
+        tvUserName = (TextView) findViewById(R.id.tv_username);
         sendMessage = (Button) findViewById(R.id.bt_sendMessage);
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +64,20 @@ public class PeopleDetailActivity extends AppCompatActivity {
         });
     }
 
+    private Bitmap bitmap;
+private String[] introduces;
     private void initData() {
-        userId = getIntent().getStringExtra("userId");
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
+        int headerPic = intent.getIntExtra("headerPic", R.mipmap.icon);
+        tvUserName.setText(userId);
+        Random random = new Random();
+        int i = random.nextInt(4);
+        Log.e("随机个人简介",i+"");
+        tvIntroduce.setText(introduces[i]);
+        bitmap = BitmapFactory.decodeResource(getResources(), headerPic);
+        bitmap = ImageCompressUtil.compressBySize(bitmap, 80, 80);
+        ivHeader.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
     }
 
     @Override
@@ -67,5 +97,11 @@ public class PeopleDetailActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.e("PeopleDetailActivity","onDestroy销毁了页面");
+        super.onDestroy();
     }
 }

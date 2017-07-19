@@ -1,15 +1,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#10000000"
     android:orientation="vertical"
-    android:background="#20ffffff"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="送货详情"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
-        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#ffffff"
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -21,19 +42,19 @@
             android:text="老铁:" />
 
         <TextView
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/colorPrimary"
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="zhang" />
+            android:layout_marginLeft="10dp"
+            android:text="zhang"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <LinearLayout
-        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="#ffffff"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="16dp"
@@ -106,10 +127,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="#ffffff"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="16dp"
@@ -182,10 +203,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="#ffffff"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="16dp"
@@ -223,10 +244,10 @@
                 android:text="物品详情:" />
 
             <TextView
-                android:layout_marginLeft="5dp"
                 android:id="@+id/tv_goodsDetial"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="(苹果/30元/5kg)" />
 
 
@@ -245,9 +266,9 @@
 
             <TextView
                 android:id="@+id/tv_comment"
-                android:layout_marginLeft="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="尽快送达，谢谢" />
         </LinearLayout>
     </LinearLayout>
@@ -260,23 +281,23 @@
         android:gravity="center">
 
         <Button
-            android:drawablePadding="-5dp"
-            android:paddingLeft="10dp"
-            android:background="@drawable/bt_detail"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginRight="30dp"
+            android:background="@drawable/bt_detail2"
             android:drawableLeft="@mipmap/call"
+            android:drawablePadding="-5dp"
+            android:paddingLeft="10dp"
             android:text="联系他" />
 
         <Button
-            android:drawablePadding="-5dp"
-            android:paddingLeft="10dp"
-            android:background="@drawable/bt_detail"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
+            android:background="@drawable/bt_detail2"
             android:drawableLeft="@mipmap/order"
+            android:drawablePadding="-5dp"
+            android:paddingLeft="10dp"
             android:text="接单" />
     </LinearLayout>
 
