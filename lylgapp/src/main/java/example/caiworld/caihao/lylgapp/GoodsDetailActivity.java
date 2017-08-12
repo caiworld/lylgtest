@@ -3,7 +3,10 @@ package example.caiworld.caihao.lylgapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +26,13 @@ public class GoodsDetailActivity extends AppCompatActivity implements UniversalP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_detail);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         initView();
         init();
         initListener();
@@ -92,5 +102,15 @@ public class GoodsDetailActivity extends AppCompatActivity implements UniversalP
         intent.putExtra("goodsWeight",weight.getText().toString().trim());
         intent.putExtra("goodsPrice",goodsPrice.getText().toString().trim());
         this.setResult(30,intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

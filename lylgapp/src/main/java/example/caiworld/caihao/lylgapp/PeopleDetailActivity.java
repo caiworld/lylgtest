@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMMessage;
 
-import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,6 +30,7 @@ public class PeopleDetailActivity extends AppCompatActivity {
     private TextView tvUserName;
     private CircleImageView ivHeader;
     private TextView tvIntroduce;
+    private Button btJieDan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class PeopleDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        introduces = new String[]{"我掉钱了。。。","我捡钱了，高兴","热死了","今天天气好热，吃不下饭，吃的是饺子。放的辣有点多，吃的时候热死。"};
+        introduces = new String[]{"我掉钱了。。。", "我捡钱了，高兴", "热死了", "今天天气好热，吃不下饭，吃的是饺子。放的辣有点多，吃的时候热死。"};
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -51,6 +51,16 @@ public class PeopleDetailActivity extends AppCompatActivity {
         tvIntroduce = (TextView) findViewById(R.id.tv_introduce);
         ivHeader = (CircleImageView) findViewById(R.id.iv_header);
         tvUserName = (TextView) findViewById(R.id.tv_username);
+        btJieDan = (Button) findViewById(R.id.bt_jiedan);
+        btJieDan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PeopleDetailActivity.this, HelpActivity.class);
+//                intent.putExtra("xiadan", 2);//2代表只推送给某个人接单、1表示推送给所有人接单
+                intent.putExtra("userId", userId);//推送给某个人
+                startActivity(intent);
+            }
+        });
         sendMessage = (Button) findViewById(R.id.bt_sendMessage);
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +75,8 @@ public class PeopleDetailActivity extends AppCompatActivity {
     }
 
     private Bitmap bitmap;
-private String[] introduces;
+    private String[] introduces;
+
     private void initData() {
         Intent intent = getIntent();
         userId = intent.getStringExtra("userId");
@@ -73,7 +84,7 @@ private String[] introduces;
         tvUserName.setText(userId);
         Random random = new Random();
         int i = random.nextInt(4);
-        Log.e("随机个人简介",i+"");
+        Log.e("随机个人简介", i + "");
         tvIntroduce.setText(introduces[i]);
         bitmap = BitmapFactory.decodeResource(getResources(), headerPic);
         bitmap = ImageCompressUtil.compressBySize(bitmap, 80, 80);
@@ -101,7 +112,7 @@ private String[] introduces;
 
     @Override
     protected void onDestroy() {
-        Log.e("PeopleDetailActivity","onDestroy销毁了页面");
+        Log.e("PeopleDetailActivity", "onDestroy销毁了页面");
         super.onDestroy();
     }
 }

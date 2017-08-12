@@ -184,7 +184,7 @@
             android:layout_marginTop="20dp"
             android:clickable="true"
             android:text="世上没有免费的跑腿(^_^)"
-            android:textColor="@drawable/textrules"
+            android:textColor="@drawable/textrules1"
             android:textSize="12sp" />
     </LinearLayout>
 

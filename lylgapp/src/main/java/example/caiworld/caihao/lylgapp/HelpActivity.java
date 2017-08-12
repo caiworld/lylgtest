@@ -280,7 +280,8 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
     }
 
     public void payment(View view) {
-        //TODO 数据校验，初赛不做
+        //TODO 数据校验，初赛不做，
+        final String userId = getIntent().getStringExtra("userId");
         Dialog dialog = new Dialog(this);
         dialog.setTitle("选择支付方式");
         View v = View.inflate(this, R.layout.dialog_pay, null);
@@ -295,7 +296,11 @@ public class HelpActivity extends AppCompatActivity implements UniversalPickerDi
             @Override
             public void onClick(View v) {
                 //确认支付
-                uploadData();
+                if (TextUtils.isEmpty(userId)) {//推送给所有人
+                    uploadData();
+                } else {
+                    //只推送给userId这个人
+                }
             }
         });
         dialog.setContentView(v);

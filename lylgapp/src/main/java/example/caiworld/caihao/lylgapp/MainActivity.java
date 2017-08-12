@@ -1,12 +1,17 @@
 package example.caiworld.caihao.lylgapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -25,11 +31,15 @@ import android.widget.Toast;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import cn.bmob.v3.datatype.BmobFile;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,15 +60,58 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout dl;
     private ImageView ibtAdd1, ibtAdd2;
     private CircleImageView menuHeader;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                saveMyPic();
+            }
+        }.start();
+        id = getIntent().getIntExtra("id", 1);
         initView();
 
         init();
         initFragment();
+    }
+
+    /**
+     * 本地存储我的头像
+     */
+    private void saveMyPic() {
+        File file = new File(getFilesDir(), "mypic.png");
+        if (file.exists()) {
+            return;
+        }
+        try {
+            //通过相关方法生成一个Bitmap类型的对象
+//            Bitmap qrcodeBitmap = EncodingHandler.createQRCode(content, 400);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.h2);
+            FileOutputStream fileOutStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutStream); // 把位图输出到指定的文件中
+            fileOutStream.flush();
+            fileOutStream.close();
+            String path = file.getPath();
+            long length = file.length();
+            Log.e("path", path + ";;length" + length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //从网上获取我的头像
+        requestFromServer();
+    }
+
+    private void requestFromServer() {
+
+    }
+
+    public int getId() {
+        return id;
     }
 
     private void initView() {
@@ -83,6 +136,16 @@ public class MainActivity extends AppCompatActivity {
                 dl.openDrawer(GravityCompat.START);
             }
         });
+        Menu menu = navView.getMenu();
+        MenuItem change = menu.getItem(1);
+        if (id == 1) {
+            change.setTitle("切换身份（宅神）");
+        } else if (id == 2) {
+            change.setTitle("切换身份（shopping达人）");
+        } else if (id == 3) {
+            change.setTitle("切换身份（快递员）");
+        }
+
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -90,15 +153,25 @@ public class MainActivity extends AppCompatActivity {
                 switch (itemId) {
                     case R.id.nav_quit:
                         dl.closeDrawers();
+                        quit();
+                        break;
+                    case R.id.nav_change://切换身份
+                        Intent intent1 = new Intent(MainActivity.this, ChooseIdentity.class);
+                        startActivity(intent1);
+                        finish();
                         break;
                     case R.id.nav_certificate:
                         //去认证界面
-                        Intent intent = new Intent(MainActivity.this, CertifacateActivity.class);
-                        startActivity(intent);
+                        Intent intent2 = new Intent(MainActivity.this, CertifacateActivity.class);
+                        startActivity(intent2);
                         dl.closeDrawers();
                         break;
+                    case R.id.nav_order:
+                        //去订单页
+                        Intent intent3 = new Intent(MainActivity.this, OrderActivity.class);
+                        startActivity(intent3);
+                        break;
                 }
-                Toast.makeText(MainActivity.this, "点击了", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -111,26 +184,67 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void quit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("退出");
+        builder.setMessage("确认退出当前账号");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // 调用sdk的退出登录方法，第一个参数表示是否解绑推送的token，没有使用推送或者被踢都要传false
+                EMClient.getInstance().logout(false, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        Log.i("lzan13", "logout success");
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        // 调用退出成功，结束app
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        Log.i("lzan13", "logout error " + i + " - " + s);
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 10 && resultCode == 10) {
             String content = data.getStringExtra("content");
             String date = data.getStringExtra("date");
+            ArrayList<String> picList = data.getStringArrayListExtra("picList");
             AllDynamicPager allDynamic = contentFragment.getSecondPager2().getAllDynamic();
-            allDynamic.getDynamics().add(0,new Dynamic(R.mipmap.h2,tag,content,null,date,0,null));
+            List<BmobFile> pics = new ArrayList<>();
+            int i = 0;
+            Log.e("Mainac,piclist.size",picList.size()+"tiao");
+                for (String bfUrl : picList) {
+                BmobFile bf = new BmobFile();
+                bf.setUrl(bfUrl);
+                pics.add(bf);
+                Log.e("Mainacticity图片长度", "wo" + (i++)+";;bfUrl:"+bfUrl);
+            }
+            Dynamic dynamic = new Dynamic(null, tag, content, pics, date, null, null);
+            allDynamic.getDynamicList().add(0, dynamic);
             allDynamic.getHandler().sendEmptyMessage(3);
+        } else if (requestCode == 11) {
+//            data.getStringExtra("")TODO 获取到输入的要匹配的快递员的路线
+            Log.e("MainActivity", "finish了");
+            contentFragment.getThirdPager3().test2();
+        } else if (requestCode == 12 && resultCode == 12) {
+            contentFragment.getSfsPager().setLLVisibility();
         }
     }
-
-    //    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                dl.openDrawer(GravityCompat.START);
-//                break;
-//        }
-//        return true;
-//    }
 
     public TextView getTvTitle() {
         return tvTitle;
@@ -171,14 +285,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isForeground = true;
-        ((HomePager) contentFragment.pagerList.get(0)).myOnResume();
+        if (id == 1) {
+            ((HomePager) contentFragment.pagerList.get(0)).myOnResume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         isForeground = false;
-        ((HomePager) contentFragment.pagerList.get(0)).myOnPause();
+        if (id == 1) {
+            ((HomePager) contentFragment.pagerList.get(0)).myOnPause();
+        }
     }
 
     @Override
@@ -187,7 +305,9 @@ public class MainActivity extends AppCompatActivity {
         //主页面销毁时退出登录
         signOut();
         //停止LocationClient，即停止获取位置信息
-        ((HomePager) contentFragment.pagerList.get(0)).stop();
+        if (id == 1) {
+            ((HomePager) contentFragment.pagerList.get(0)).stop();
+        }
         Log.e("MainActivity", "主页面销毁");
     }
 
@@ -242,16 +362,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
-
-
-    //    @Override
-//    public void onBackPressed() {
-//        //使用 Back 键返回桌面，但不关闭当前应用，而是使之进入后台，就像按下 Home 键一样
-//        Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
-//        launcherIntent.addCategory(Intent.CATEGORY_HOME);
-//        startActivity(launcherIntent);
-//
-//    }
 
     //start-->JPush
     //for receive customer msg from jpush server
@@ -313,13 +423,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setTag() {
 //        EditText tagEdit = (EditText) findViewById(R.id.et_tag);
-        tag = getIntent().getStringExtra("username");
+//        tag = getIntent().getStringExtra("username");
+        SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
 
-//        // 检查 tag 的有效性
-//        if (TextUtils.isEmpty(tag)) {
-//            Toast.makeText(MainActivity.this, "Tag不能为空", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        tag = sp.getString("username", "");
 
         // ","隔开的多个 转换成 Set
         String[] sArray = tag.split(",");

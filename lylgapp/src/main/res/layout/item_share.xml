@@ -19,7 +19,7 @@
             android:src="@mipmap/icon" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -36,35 +36,27 @@
                 android:layout_height="wrap_content"
                 android:text="你awluifgluieghaselksbne射给你看班社 ie了来看了你能不能 来吧额我I酷不能给你啊不了I比拉尔kin比啊了" />
 
-            <LinearLayout
-                android:id="@+id/ll_pics"
-                android:visibility="gone"
+
+                <!--<GridView-->
+                    <!--android:layout_marginLeft="30dp"-->
+                    <!--android:layout_marginRight="30dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:columnWidth="120dp"-->
+                    <!--android:numColumns="3"-->
+                    <!--android:stretchMode="columnWidth"-->
+                    <!--android:id="@+id/gv"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"></GridView>-->
+            <example.caiworld.caihao.lylgapp.view.NoScrollGridView
+                android:id="@+id/gv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/iv1"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:src="@mipmap/fa2" />
-
-                <ImageView
-                    android:visibility="gone"
-                    android:id="@+id/iv2"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:src="@mipmap/shou2" />
-
-                <ImageView
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:visibility="gone" />
-            </LinearLayout>
+                android:layout_marginLeft="10dp"
+                android:horizontalSpacing="1dp"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
+                android:visibility="visible"
+                android:verticalSpacing="1dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -82,29 +74,29 @@
             android:textSize="10sp" />
 
         <ImageView
-            android:clickable="true"
             android:id="@+id/iv_like"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginRight="30dp"
             android:layout_toLeftOf="@+id/iv_comments"
+            android:clickable="true"
             android:src="@mipmap/like" />
 
         <ImageView
-            android:layout_centerVertical="true"
             android:id="@+id/iv_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
             android:layout_toLeftOf="@+id/iv_share"
             android:src="@mipmap/comments" />
 
         <ImageView
-            android:layout_centerVertical="true"
             android:id="@+id/iv_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:src="@mipmap/share" />
 

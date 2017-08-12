@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,8 @@ public class ThirdPager extends BasePager {
     private MyAdapter adapter;
     private MyHandler handler;
     private ProgressDialog dialog;
+    private ImageView ibtAdd1;
+    private ImageView ibtAdd2;
 
     public ThirdPager(Activity activity) {
         super(activity);
@@ -52,6 +56,9 @@ public class ThirdPager extends BasePager {
                 if (msg.what == 1) {
                     dialog.dismiss();
                     adapter.notifyDataSetChanged();
+                }else if (msg.what ==2){
+                    dialog.dismiss();
+                    Toast.makeText(mActivity,"加载失败，请检查网络",Toast.LENGTH_SHORT).show();
                 }
             } else {
                 packages.clear();//用户取消了加载，则将数据清空，防止加载多遍
@@ -62,6 +69,9 @@ public class ThirdPager extends BasePager {
     @Override
     public View initView() {
         View view = View.inflate(mActivity, R.layout.pager_third, null);
+        ibtAdd1 = ((MainActivity) mActivity).getIbtAdd1();
+        ibtAdd2 = ((MainActivity) mActivity).getIbtAdd2();
+
         lvSendPackage = (ListView) view.findViewById(R.id.lv_sendPackage);
         handler = new MyHandler();
         packages = new ArrayList<>();
@@ -76,6 +86,9 @@ public class ThirdPager extends BasePager {
     @Override
     public void initData() {
         ((MainActivity) mActivity).getTvTitle().setText("随手送");
+
+        ibtAdd1.setVisibility(View.GONE);
+        ibtAdd2.setVisibility(View.GONE);
 //        ((MainActivity) mActivity).getIbtAdd().setVisibility(View.INVISIBLE);
         if (isFirst) {
             dialog = new ProgressDialog(mActivity);
@@ -96,6 +109,7 @@ public class ThirdPager extends BasePager {
                         isFirst = false;
                     } else {
                         Log.e("RequestPackage", "查询失败");
+                        handler.sendEmptyMessage(2);
                     }
                 }
             });
@@ -158,19 +172,19 @@ public class ThirdPager extends BasePager {
     }
 
     /**
-     * <p>
+     * <p/>
      * private String username;//用户名
-     * <p>
+     * <p/>
      * private String sendAddress;//发货人地址
      * private double lat;//发货人纬度
      * private double lon;//发货人经度
      * private String sendName;//发货人姓名
      * private String sendNumber;//发货人号码
-     * <p>
+     * <p/>
      * private String receiveAddress;//收货人地址
      * private String receiveName;//收货人名字
      * private String receiveNumber;//收货人号码
-     * <p>
+     * <p/>
      * private String pickUpTime;//取货时间
      * private String goodsDetail;//物品信息
      * private String comment;//备注

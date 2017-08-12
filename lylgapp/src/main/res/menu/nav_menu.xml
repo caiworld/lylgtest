@@ -6,6 +6,10 @@
             android:icon="@mipmap/wallet"
             android:title="我的钱包" />
         <item
+            android:id="@+id/nav_change"
+            android:icon="@mipmap/change"
+            android:title="切换身份" />
+        <item
             android:id="@+id/nav_certificate"
             android:icon="@mipmap/renzheng"
             android:title="我要认证" />

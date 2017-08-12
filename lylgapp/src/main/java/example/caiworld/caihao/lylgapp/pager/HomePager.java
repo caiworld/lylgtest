@@ -1,12 +1,13 @@
 package example.caiworld.caihao.lylgapp.pager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ import java.util.TimerTask;
 
 import example.caiworld.caihao.lylgapp.ChatActivity;
 import example.caiworld.caihao.lylgapp.HelpActivity;
+import example.caiworld.caihao.lylgapp.HelpOtherActivity;
 import example.caiworld.caihao.lylgapp.MainActivity;
 import example.caiworld.caihao.lylgapp.R;
 import example.caiworld.caihao.lylgapp.base.BasePager;
@@ -70,6 +72,8 @@ public class HomePager extends BasePager {
     private View pop;
     private ImageView ibtAdd2;
     private ImageView ibtAdd1;
+    private Button helpOther;
+    private int id;
 
     public HomePager(Activity activity) {
         super(activity);
@@ -77,14 +81,30 @@ public class HomePager extends BasePager {
 
     @Override
     public View initView() {
+        SharedPreferences sp = mActivity.getSharedPreferences("id", Context.MODE_PRIVATE);
+        id = sp.getInt("id", 1);
         ibtAdd1 = ((MainActivity) mActivity).getIbtAdd1();
         ibtAdd2 = ((MainActivity) mActivity).getIbtAdd2();
         view = View.inflate(mActivity, R.layout.pager_home, null);
+        helpOther = (Button) view.findViewById(R.id.bt_helpOther);
+        if (id == 1) {
+            helpOther.setVisibility(View.GONE);
+        } else if (id == 2) {
+            helpOther.setVisibility(View.VISIBLE);
+            helpOther.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mActivity, HelpOtherActivity.class);
+                    mActivity.startActivity(intent);
+                }
+            });
+        }
         helpMe = (Button) view.findViewById(R.id.bt_helpMe);//求帮助
         helpMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mActivity, HelpActivity.class);
+//                intent.putExtra("xiadan",1);//1表示推送给所有人接单，2表示推送给某个人接单
                 mActivity.startActivity(intent);
             }
         });
@@ -155,7 +175,7 @@ public class HomePager extends BasePager {
      */
     @Override
     public void initData() {
-        ((MainActivity)mActivity).getTvTitle().setText("首页");
+        ((MainActivity) mActivity).getTvTitle().setText("首页");
 
         ibtAdd1.setVisibility(View.GONE);
         ibtAdd2.setVisibility(View.GONE);
@@ -173,13 +193,6 @@ public class HomePager extends BasePager {
 
         Log.e("homepager", "获取到当前位置" + lat + ";" + lon);
 
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(new LatLng(lat, lon))// 设置位置
-//                .icon(me)// 设置图标
-//                .draggable(true)// 设置是否可以拖拽 默认是否
-//                .title("myself");// 设置标题
-//        baiduMap.addOverlay(markerOptions);
-
         MarkerOptions markerOptions;
         BitmapDescriptor bitmapDes = BitmapDescriptorFactory
                 .fromResource(R.mipmap.z1);
@@ -195,14 +208,6 @@ public class HomePager extends BasePager {
                 .icon(bitmapDes).title("caihao");
         baiduMap.addOverlay(markerOptions);
 
-//        ArrayList<BitmapDescriptor> bitmaps = new ArrayList<BitmapDescriptor>();
-//        bitmaps.add(bitmapDes);
-//        bitmaps.add(BitmapDescriptorFactory.fromResource(R.drawable.icon_geo));
-//        markerOptions = new MarkerOptions().title("向东")
-//                .position(new LatLng(latitude, longitude + 0.001))
-//                .icons(bitmaps)// 显示多个图片来回切换 帧动画
-//                .period(10);// 设置多少帧刷新一次图片资源，Marker动画的间隔时间，值越小动画越快
-//        baiduMap.addOverlay(markerOptions);
         bitmapDes = BitmapDescriptorFactory
                 .fromResource(R.mipmap.z3);
         markerOptions = new MarkerOptions().title("向东")
@@ -217,7 +222,6 @@ public class HomePager extends BasePager {
         baiduMap.addOverlay(markerOptions);
         baiduMap.setOnMarkerClickListener(new MyClickListener());
         baiduMap.setOnMapStatusChangeListener(new MyStatusListener());
-//        baiduMap.setOnMarkerDragListener(new MyDragListener());
     }
 
     /**
@@ -307,43 +311,6 @@ public class HomePager extends BasePager {
         }
     }
 
-    /**
-     * mark拖拽
-     */
-    class MyDragListener implements BaiduMap.OnMarkerDragListener {
-        @Override
-        public void onMarkerDragEnd(Marker marker) {
-            //TODO 给头上添加一个信息显示我在哪
-            //获取每次拖拽后的坐标
-            LatLng latLng = marker.getPosition();
-            //将火星坐标转为百度坐标
-            Gps bd = CoordinateUtil.bd_encrypt(latLng.latitude, latLng.longitude);
-            LatLng position = new LatLng(bd.getWgLat(), bd.getWgLon());
-
-            ViewGroup.LayoutParams params = new MapViewLayoutParams.Builder()
-                    .layoutMode(MapViewLayoutParams.ELayoutMode.mapMode)// 按照经纬度设置位置
-                    .position(position)// 不能传null
-                    .width(MapViewLayoutParams.WRAP_CONTENT)
-                    .height(MapViewLayoutParams.WRAP_CONTENT)
-                    .yOffset(-5)// 距离position的像素 向下是正值 向上是负值
-                    .build();
-            mMapView.updateViewLayout(pop, params);
-            pop.setVisibility(View.VISIBLE);
-//            myLocation.setLatitude(position.latitude);
-//            myLocation.setLongitude(position.longitude);
-        }
-
-        @Override
-        public void onMarkerDrag(Marker marker) {
-        }
-
-        @Override
-        public void onMarkerDragStart(Marker marker) {
-//            pop.setVisibility(View.INVISIBLE);
-        }
-    }
-
-
     public void stop() {
         if (mLocationClient != null) {
             mLocationClient.stop();
@@ -415,17 +382,6 @@ public class HomePager extends BasePager {
                 initPop(new LatLng(lat, lon));
                 isFirstLocate = false;
             }
-//            else {
-//                ViewGroup.LayoutParams params = new MapViewLayoutParams.Builder()
-//                        .layoutMode(MapViewLayoutParams.ELayoutMode.mapMode)// 按照经纬度设置位置
-//                        .position(new LatLng(lat,lon))// 不能传null
-//                        .width(MapViewLayoutParams.WRAP_CONTENT)
-//                        .height(MapViewLayoutParams.WRAP_CONTENT)
-//                        .yOffset(-5)// 距离position的像素 向下是正值 向上是负值
-//                        .build();
-//                mMapView.updateViewLayout(pop, params);
-//                pop.setVisibility(View.VISIBLE);
-//            }
 
             //让小圆圈出现在“我”的位置上
             MyLocationData.Builder locationBuilder = new MyLocationData.Builder();
@@ -496,6 +452,7 @@ public class HomePager extends BasePager {
     private PolylineOptions options;
     private int i = 1;
     private KDLocation kd;
+
     private void startMove() {
         new Thread() {
             @Override

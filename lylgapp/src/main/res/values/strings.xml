@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LylgApp</string>
+    <string name="app_name">随手快递</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="confirmpassword">确认密码</string>
@@ -12,4 +12,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="viewpager_indicator">%1$d/%2$d</string>
 </resources>

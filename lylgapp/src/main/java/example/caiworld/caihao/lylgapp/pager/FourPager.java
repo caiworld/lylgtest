@@ -132,8 +132,6 @@ public class FourPager extends BasePager {
                             break;
                         }
 
-//                        Log.e("查询user", user.getUsername() + ":" + list.size());
-//                        Log.e("friends.size", friends.size() + "");
                     }
                     handler.sendEmptyMessage(1);
                 } else {//查询失败

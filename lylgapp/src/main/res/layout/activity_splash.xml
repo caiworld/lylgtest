@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context="example.caiworld.caihao.lylgapp.SplashActivity">
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:scaleType="fitXY"
-        android:src="@mipmap/logo"
-        android:id="@+id/iv_splash"
+        android:src="@mipmap/logo4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_height="match_parent" />
 </RelativeLayout>

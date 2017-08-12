@@ -66,8 +66,6 @@ public class SFSFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sfs, null);
         mapView = (MapView) view.findViewById(R.id.mapView);
-        etFrom = (EditText) view.findViewById(R.id.et_from);
-        etTo = (EditText) view.findViewById(R.id.et_to);
         lvSfs = (ListView) view.findViewById(R.id.lv_sfs);
         moniShuju();
         lvSfs.setAdapter(new SFSAdapter());

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import cn.bmob.v3.Bmob;
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -36,7 +37,8 @@ public class MyApplication extends Application {
         SDKInitializer.initialize(getApplicationContext());
         // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
         JPushInterface.init(getApplicationContext());
-
+        //默认初始化bmob
+        Bmob.initialize(this, "185d4c4109490b94a8fc951c9763375b");
 
 //        //默认初始化bmob
 //        Bmob.initialize(this, "185d4c4109490b94a8fc951c9763375b");
@@ -87,10 +89,6 @@ public class MyApplication extends Application {
         options.setDeleteMessagesAsExitGroup(false);
         // 设置是否允许聊天室的Owner 离开并删除聊天室的会话
         options.allowChatroomOwnerLeave(true);
-        // 设置google GCM推送id，国内可以不用设置
-        // options.setGCMNumber(MLConstants.ML_GCM_NUMBER);
-        // 设置集成小米推送的appid和appkey
-        // options.setMipushConfig(MLConstants.ML_MI_APP_ID, MLConstants.ML_MI_APP_KEY);
 
         return options;
     }
@@ -109,6 +107,7 @@ public class MyApplication extends Application {
 
     /**
      * 销毁指定的activity
+     *
      * @param activityName
      */
     public static void destroyActivity(String activityName) {

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -93,18 +94,18 @@ public class MyDynamicPager extends BasePager {
     }
 
 
-    private void moniData() {
-        Dynamic dynamic1 = new Dynamic(R.mipmap.icon, "cai", "今天天真热，待会去买水喝。哦，没带钱，还要回宿舍去拿钱，这么远，算了。", new int[]{R.mipmap.shou2}, "7-11 15:31", 3, null);
-//        Dynamic dynamic2 = new Dynamic(R.mipmap.icon, "zhang", "真饿，可以去吃饭了。", new int[]{R.mipmap.fa2, R.mipmap.shou2}, "7-11 15:30", 4, null);
-//        Dynamic dynamic3 = new Dynamic(R.mipmap.icon, "zhang", "今天天真热，吃不下饭。", new int[]{R.mipmap.fa2, R.mipmap.shou2}, "7-11 15:25", 2, null);
-        Dynamic dynamic4 = new Dynamic(R.mipmap.icon, "cai", "今天天真热，待会去买水喝。哦，没带钱，还要回宿舍去拿钱，这么远，算了。", new int[]{R.mipmap.shou2}, "7-11 15:15", 5, null);
-//        Dynamic dynamic5 = new Dynamic(R.mipmap.icon, "zzz", "今天天真热，待会去买水喝。哦，没带钱，还要回宿舍去拿钱，这么远，算了。", new int[]{R.mipmap.fa2, R.mipmap.shou2}, "7-11 15:02", 1, null);
-        dynamics.add(dynamic1);
-//        dynamics.add(dynamic2);
-//        dynamics.add(dynamic3);
-        dynamics.add(dynamic4);
-//        dynamics.add(dynamic5);
-    }
+//    private void moniData() {
+//        Dynamic dynamic1 = new Dynamic(R.mipmap.icon, "cai", "今天天真热，待会去买水喝。哦，没带钱，还要回宿舍去拿钱，这么远，算了。", new int[]{R.mipmap.shou2}, "7-11 15:31", 3, null);
+////        Dynamic dynamic2 = new Dynamic(R.mipmap.icon, "zhang", "真饿，可以去吃饭了。", new int[]{R.mipmap.fa2, R.mipmap.shou2}, "7-11 15:30", 4, null);
+////        Dynamic dynamic3 = new Dynamic(R.mipmap.icon, "zhang", "今天天真热，吃不下饭。", new int[]{R.mipmap.fa2, R.mipmap.shou2}, "7-11 15:25", 2, null);
+//        Dynamic dynamic4 = new Dynamic(R.mipmap.icon, "cai", "今天天真热，待会去买水喝。哦，没带钱，还要回宿舍去拿钱，这么远，算了。", new int[]{R.mipmap.shou2}, "7-11 15:15", 5, null);
+////        Dynamic dynamic5 = new Dynamic(R.mipmap.icon, "zzz", "今天天真热，待会去买水喝。哦，没带钱，还要回宿舍去拿钱，这么远，算了。", new int[]{R.mipmap.fa2, R.mipmap.shou2}, "7-11 15:02", 1, null);
+//        dynamics.add(dynamic1);
+////        dynamics.add(dynamic2);
+////        dynamics.add(dynamic3);
+//        dynamics.add(dynamic4);
+////        dynamics.add(dynamic5);
+//    }
 
     Handler handler = new Handler() {
         @Override
@@ -140,7 +141,7 @@ public class MyDynamicPager extends BasePager {
                     dialog = new ProgressDialog(mActivity);
                     dialog.setTitle("加载中...");
                     dialog.show();
-                    moniData();
+//                    moniData();
                     handler.sendEmptyMessage(1);
                     isFirst = false;
                     Looper.loop();
@@ -175,38 +176,17 @@ public class MyDynamicPager extends BasePager {
                 holder.ivHeader = (ImageView) convertView.findViewById(R.id.iv_Header);
                 holder.tvName = (TextView) convertView.findViewById(R.id.tv_Name);
                 holder.tvContent = (TextView) convertView.findViewById(R.id.tv_content);
-                holder.iv1 = (ImageView) convertView.findViewById(R.id.iv1);
-                holder.iv2 = (ImageView) convertView.findViewById(R.id.iv2);
                 holder.date = (TextView) convertView.findViewById(R.id.tv_date);
-                holder.llPics = (LinearLayout) convertView.findViewById(R.id.ll_pics);
                 convertView.setTag(holder);
             } else {
                 holder = (ShareHolder) convertView.getTag();
             }
-            holder.ivHeader.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPicHeader()));
-            holder.tvName.setText(dynamics.get(position).getUsername());
-            holder.tvContent.setText(dynamics.get(position).getContent());
-            holder.date.setText(dynamics.get(position).getDate());
-//            if (dynamics.get(position).getPics().length == 2) {
-//                holder.iv1.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPics()[0]));
-//                holder.iv2.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPics()[1]));
-//                holder.iv1.setVisibility(View.VISIBLE);
-//                holder.iv2.setVisibility(View.VISIBLE);
-//            } else if (dynamics.get(position).getPics().length == 1) {
-//                holder.iv1.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPics()[0]));
-//                holder.iv2.setVisibility(View.INVISIBLE);
-//            }
+            Dynamic dynamic = dynamics.get(position);
+            Glide.with(mActivity).load(dynamic.getPicHeader().getFileUrl()).into(holder.ivHeader);
+            holder.tvName.setText(dynamic.getUsername());
+            holder.tvContent.setText(dynamic.getContent());
+            holder.date.setText(dynamic.getDate());
             holder.llPics.setVisibility(View.VISIBLE);
-            if (dynamics.get(position).getPics().length==1){
-                holder.iv1.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPics()[0]));
-                holder.iv1.setVisibility(View.VISIBLE);
-                holder.iv2.setVisibility(View.GONE);
-            }else if (dynamics.get(position).getPics().length==2){
-                holder.iv1.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPics()[0]));
-                holder.iv2.setImageDrawable(mActivity.getResources().getDrawable(dynamics.get(position).getPics()[1]));
-                holder.iv1.setVisibility(View.VISIBLE);
-                holder.iv2.setVisibility(View.VISIBLE);
-            }
             return convertView;
         }
     }

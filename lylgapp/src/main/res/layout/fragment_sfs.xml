@@ -5,68 +5,37 @@
     android:layout_margin="5dp"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/darkgray"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="从" />
-
-            <EditText
-                android:textSize="14sp"
-                android:id="@+id/et_from"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="始发地" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/darkgray"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="到" />
-
-            <EditText
-                android:textSize="14sp"
-                android:id="@+id/et_to"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="目的地" />
-        </LinearLayout>
-    </LinearLayout>
-
-
-
-
-    <com.baidu.mapapi.map.MapView
-        android:id="@+id/mapView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="11111">
+        android:layout_weight="1111"
+        >
 
-    </com.baidu.mapapi.map.MapView>
+        <Button
+            android:id="@+id/bt_chooseaddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/bt_detail"
+            android:text="选择路线" />
+
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.baidu.mapapi.map.MapView>
+    </RelativeLayout>
+
     <LinearLayout
-        android:background="@color/darkgray"
+        android:id="@+id/lls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/darkgray"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,9 +51,11 @@
             android:gravity="center_horizontal"
             android:text="推荐人选" />
     </LinearLayout>
+
     <ListView
         android:id="@+id/lv_sfs"
         android:layout_width="match_parent"
-        android:layout_height="160dp"></ListView>
+        android:layout_height="160dp"
+        android:visibility="gone"></ListView>
 
 </LinearLayout>

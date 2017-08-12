@@ -239,13 +239,29 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bt_sendMessage"
+        <LinearLayout
+            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorPrimary"
-            android:text="发信息" />
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_marginRight="40dp"
+                android:id="@+id/bt_sendMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bt_detail"
+                android:text="发送信息" />
+
+            <Button
+                android:layout_marginLeft="40dp"
+                android:id="@+id/bt_jiedan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bt_detail"
+                android:text="发起订单" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
